@@ -1,3 +1,24 @@
+import styles from "./styles/page.module.css";
+
+export default function Home(){
+  return(
+    <div className={styles.page}>
+      <header className={styles.topbar}>
+        <h1 className={styles.headding}>Header</h1>
+      </header>
+      <main className={styles.appcontainer}>
+        <p>loremipsum</p>
+        <p>dolor</p>
+        <div>
+          bottom nav
+        </div>
+      </main>
+
+    </div>
+  );
+}
+
+/*
 import Image from "next/image";
 import styles from "./page.module.css";
 
@@ -93,3 +114,4 @@ export default function Home() {
     </div>
   );
 }
+*/

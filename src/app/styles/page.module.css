@@ -1,0 +1,45 @@
+/* BOX MODEL 
+
+* tanto html como css
+* aninhamento de 'caixas'
+
+height= altura
+width= largura
+border= borda
+padding= preenchimento/espaçamento entre borda e conteúdo
+margin= espaço EXTERNO entre uma caixa e outra
+outline= contorno, fora do elemento
+
+TIPOS DE CAIXAS
+* box-level= uma nova caixa do tipo box-level ocupa toda a largura da caixa externa
+* inline-level= permanece dentro da linha
+
+
+    margin: auto; /* centraliza uma caixa */
+.page {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #2C2D26;
+  /*borda */
+  border-style: solid;
+  border-width: 1px;
+  border-color: white;
+}
+
+.topbar{
+  background-color: #ff5e33;
+  border: 1px solid white; /* borda: espessura, tipo, cor*/
+}
+.headding{
+  background-color: cornflowerblue;
+  color: blanchedalmond;
+  text-align: center;
+}
+
+.appcontainer{
+  background-color: #ff5b04;
+  border: 1px solid white; /* borda: espessura, tipo, cor*/
+}
