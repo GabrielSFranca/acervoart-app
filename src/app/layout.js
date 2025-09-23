@@ -1,5 +1,6 @@
 import "./styles/globals.css";
 import { cormorant } from "./styles/fonts";
+import { BottomNavMui } from '@/components/bottomnavmui';
 
 export const metadata = {
   title: "mosai | Acervo ArtÍstico UFSM",
@@ -19,6 +20,7 @@ export default function RootLayout({ children }) {
     <html lang="pt-BR">
       <body className={`${cormorant.variable}`}>
         {children}
+        <BottomNavMui />
       </body>
     </html>
   );

@@ -10,8 +10,9 @@ export default function Home(){
         <p>loremipsum</p>
         <p>dolor</p>
         <div>
-          bottom nav
+          div qualquer
         </div>
+
       </main>
 
     </div>
