@@ -1,277 +1,361 @@
 "use client"
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
 
-export default function Home() {
-  const [obras, setObras] = useState([]);
+export default function ObraDetalhes() {
+  const params = useParams();
+  const obraId = params.id;
+  
+  const [obra, setObra] = useState(null);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState(null);
 
-  // Função melhorada para extrair URL da imagem
+  // Função para extrair URL da imagem
   const extrairUrlImagem = (htmlString) => {
     if (!htmlString) return null;
-    
-    // Regex mais robusta que funciona com aspas simples e duplas
     const regex = /src=["']([^"']+)["']/i;
     const match = htmlString.match(regex);
-    
     return match ? match[1] : null;
   };
 
-  // Função para buscar os dados da API
-  const buscarObras = async () => {
+  // Função para extrair metadados
+  const extrairMetadado = (metadados, chave) => {
+    if (!metadados) return null;
+    const meta = Object.values(metadados).find(m => 
+      m.name?.toLowerCase().includes(chave.toLowerCase())
+    );
+    return meta?.value || null;
+  };
+
+  // Buscar obra específica
+  const buscarObra = async () => {
     try {
       setCarregando(true);
       setErro(null);
       
-      const TAINACAN_API_URL = 'https://tainacan.ufsm.br/acervo-artistico/wp-json/tainacan/v2/collection/2174/items?perpage=5';
+      console.log(`Buscando obra ID: ${obraId}`);
+      const response = await fetch(
+        `https://tainacan.ufsm.br/acervo-artistico/wp-json/tainacan/v2/items/${obraId}`
+      );
       
-      console.log('🔍 Iniciando busca na API...');
-      const resposta = await fetch(TAINACAN_API_URL);
+      if (!response.ok) throw new Error('Obra não encontrada');
       
-      if (!resposta.ok) {
-        throw new Error(`Erro HTTP: ${resposta.status}`);
-      }
-      
-      const dados = await resposta.json();
-      console.log('📦 Dados brutos da API:', dados);
-      
-      // Verifica se temos items no retorno
-      if (!dados.items || !Array.isArray(dados.items)) {
-        throw new Error('Formato de dados inválido da API');
-      }
-      
-      console.log(`🎨 Número de obras retornadas: ${dados.items.length}`);
-      
-      // Processa cada obra
-      const obrasProcessadas = dados.items.map((obra, index) => {
-        console.log(`📝 Processando obra ${index + 1}:`, {
-          id: obra.id,
-          titulo: obra.title,
-          temDocumentHtml: !!obra.document_as_html,
-          documentHtml: obra.document_as_html ? obra.document_as_html.substring(0, 100) + '...' : 'N/A'
-        });
-        
-        const imagemUrl = extrairUrlImagem(obra.document_as_html);
-        
-        console.log(`🖼️ Obra ${index + 1} - URL da imagem:`, imagemUrl);
-        
-        return {
-          id: obra.id,
-          titulo: obra.title || 'Sem título',
-          imagemUrl: imagemUrl,
-          // Mantém os dados originais para debug
-          dadosCompletos: obra
-        };
+      const obraData = await response.json();
+      console.log('Obra detalhada:', obraData);
+
+      const imagemUrl = extrairUrlImagem(obraData.document_as_html);
+
+      setObra({
+        id: obraData.id,
+        titulo: obraData.title || 'Sem título',
+        imagemUrl: imagemUrl,
+        artista: extrairMetadado(obraData.metadata, 'autor') || 'Artista não identificado',
+        tecnica: extrairMetadado(obraData.metadata, 'técnica') || '',
+        data: extrairMetadado(obraData.metadata, 'data') || '',
+        localizacao: extrairMetadado(obraData.metadata, 'localização') || '',
+        dimensoes: extrairMetadado(obraData.metadata, 'dimensões') || '',
+        descricao: obraData.description || '',
+        dadosCompletos: obraData
       });
       
-      console.log('✅ Obras processadas:', obrasProcessadas);
-      setObras(obrasProcessadas);
-      
-    } catch (erro) {
-      console.error('❌ Erro ao buscar obras:', erro);
-      setErro(erro.message);
+    } catch (error) {
+      console.error('Erro:', error);
+      setErro(error.message);
     } finally {
       setCarregando(false);
     }
   };
 
   useEffect(() => {
-    buscarObras();
-  }, []);
+    if (obraId) {
+      buscarObra();
+    }
+  }, [obraId]);
 
-  // Estado de carregamento
   if (carregando) {
     return (
-      <div style={{ 
-        padding: '2rem', 
-        textAlign: 'center',
-        minHeight: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center'
-      }}>
-        <h1>🎨 Acervo Artístico UFSM</h1>
-        <p>Carregando obras...</p>
-        <div style={{ marginTop: '1rem' }}>⏳</div>
+      <div className="container">
+        <header className="header">
+          <Link href="/" className="voltar-link">← Voltar</Link>
+          <h1>Carregando obra...</h1>
+        </header>
       </div>
     );
   }
 
-  // Estado de erro
-  if (erro) {
+  if (erro || !obra) {
     return (
-      <div style={{ 
-        padding: '2rem',
-        textAlign: 'center'
-      }}>
-        <h1>🎨 Acervo Artístico UFSM</h1>
-        <p style={{ color: 'red' }}>Erro: {erro}</p>
-        <button 
-          onClick={buscarObras}
-          style={{
-            padding: '0.5rem 1rem',
-            marginTop: '1rem',
-            backgroundColor: '#4a6fa5',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer'
-          }}
-        >
-          Tentar Novamente
-        </button>
+      <div className="container">
+        <header className="header">
+          <Link href="/" className="voltar-link">← Voltar</Link>
+          <h1>Obra não encontrada</h1>
+        </header>
+        <div className="erro">
+          <p>{erro || 'A obra solicitada não existe.'}</p>
+          <button onClick={buscarObra} className="btn">
+            Tentar Novamente
+          </button>
+        </div>
       </div>
     );
   }
 
-  // Estado de sucesso
   return (
-    <div style={{ 
-      padding: '1rem',
-      maxWidth: '600px',
-      margin: '0 auto'
-    }}>
-      <header style={{ 
-        textAlign: 'center', 
-        marginBottom: '2rem',
-        padding: '1rem 0',
-        borderBottom: '2px solid #f0f0f0'
-      }}>
-        <h1 style={{ 
-          margin: '0 0 0.5rem 0',
-          color: '#2c3e50'
-        }}>
-          🎨 Acervo Artístico UFSM
-        </h1>
-        <p style={{ 
-          margin: 0,
-          color: '#666',
-          fontSize: '0.9rem'
-        }}>
-          {obras.length} obras em destaque
-        </p>
+    <div className="container">
+      <header className="header">
+        <Link href="/" className="voltar-link">← Voltar para a lista</Link>
+        <h1>Detalhes da Obra</h1>
       </header>
 
-      <div style={{ 
-        display: 'flex', 
-        flexDirection: 'column', 
-        gap: '1.5rem' 
-      }}>
-        {obras.map(obra => (
-          <div 
-            key={obra.id}
-            style={{ 
-              border: '1px solid #e0e0e0',
-              borderRadius: '12px',
-              overflow: 'hidden',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-              backgroundColor: 'white'
-            }}
-          >
-            {/* Imagem da obra */}
-            {obra.imagemUrl ? (
-              <div style={{
-                width: '100%',
-                height: '200px',
-                overflow: 'hidden'
-              }}>
-                <img 
-                  src={obra.imagemUrl} 
-                  alt={obra.titulo}
-                  style={{ 
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover'
-                  }}
-                  onError={(e) => {
-                    // Fallback se a imagem não carregar
-                    e.target.style.display = 'none';
-                    e.target.nextSibling.style.display = 'block';
-                  }}
-                />
-                {/* Placeholder se a imagem falhar */}
-                <div 
-                  style={{
-                    display: 'none',
-                    width: '100%',
-                    height: '200px',
-                    backgroundColor: '#f0f0f0',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: '#999'
-                  }}
-                >
-                  🖼️ Imagem não disponível
-                </div>
-              </div>
-            ) : (
-              // Placeholder quando não há imagem
-              <div 
-                style={{
-                  width: '100%',
-                  height: '200px',
-                  backgroundColor: '#f8f9fa',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#999',
-                  borderBottom: '1px solid #e0e0e0'
-                }}
-              >
-                🖼️ Sem imagem
+      <div className="detalhes-conteudo">
+        {/* Imagem Principal */}
+        <div className="imagem-principal">
+          {obra.imagemUrl ? (
+            <img 
+              src={obra.imagemUrl} 
+              alt={obra.titulo}
+              className="imagem-obra"
+              onError={(e) => {
+                e.target.style.display = 'none';
+                e.target.nextSibling.style.display = 'flex';
+              }}
+            />
+          ) : null}
+          <div className="imagem-placeholder">
+            🖼️ Imagem não disponível
+          </div>
+        </div>
+
+        {/* Informações da Obra */}
+        <div className="informacoes-obra">
+          <div className="info-principal">
+            <h2 className="titulo-obra">{obra.titulo}</h2>
+            <p className="artista-obra">{obra.artista}</p>
+          </div>
+
+          {/* Metadados */}
+          <div className="metadados">
+            {obra.tecnica && (
+              <div className="metadado-item">
+                <span className="metadado-label">Técnica</span>
+                <span className="metadado-valor">{obra.tecnica}</span>
               </div>
             )}
             
-            {/* Informações da obra */}
-            <div style={{ padding: '1rem' }}>
-              <h3 style={{ 
-                margin: '0 0 0.5rem 0',
-                color: '#2c3e50',
-                fontSize: '1.1rem'
-              }}>
-                {obra.titulo}
-              </h3>
-              
-              {/* Debug info - pode remover depois */}
-              <div style={{ 
-                fontSize: '0.7rem', 
-                color: '#888',
-                marginTop: '0.5rem',
-                padding: '0.5rem',
-                backgroundColor: '#f8f9fa',
-                borderRadius: '4px',
-                fontFamily: 'monospace'
-              }}>
-                ID: {obra.id} | Imagem: {obra.imagemUrl ? '✅' : '❌'}
+            {obra.data && (
+              <div className="metadado-item">
+                <span className="metadado-label">Data</span>
+                <span className="metadado-valor">{obra.data}</span>
               </div>
-            </div>
+            )}
+            
+            {obra.localizacao && (
+              <div className="metadado-item">
+                <span className="metadado-label">Localização</span>
+                <span className="metadado-valor">{obra.localizacao}</span>
+              </div>
+            )}
+            
+            {obra.dimensoes && (
+              <div className="metadado-item">
+                <span className="metadado-label">Dimensões</span>
+                <span className="metadado-valor">{obra.dimensoes}</span>
+              </div>
+            )}
           </div>
-        ))}
+
+          {/* Descrição */}
+          {obra.descricao && (
+            <div className="descricao">
+              <h3>Descrição</h3>
+              <p>{obra.descricao}</p>
+            </div>
+          )}
+
+          {/* Debug (opcional) */}
+          <details className="debug-info">
+            <summary>Informações técnicas</summary>
+            <pre>{JSON.stringify(obra.dadosCompletos, null, 2)}</pre>
+          </details>
+        </div>
       </div>
 
-      {/* Botão para recarregar */}
-      <div style={{ 
-        textAlign: 'center', 
-        marginTop: '2rem',
-        padding: '1rem'
-      }}>
-        <button 
-          onClick={buscarObras}
-          style={{
-            padding: '0.75rem 1.5rem',
-            backgroundColor: '#4a6fa5',
-            color: 'white',
-            border: 'none',
-            borderRadius: '8px',
-            cursor: 'pointer',
-            fontSize: '1rem'
-          }}
-        >
-          🔄 Atualizar Lista
-        </button>
-      </div>
+      <style jsx>{`
+        .container {
+          max-width: 600px;
+          margin: 0 auto;
+          padding: 1rem;
+          min-height: 100vh;
+        }
+
+        .header {
+          margin-bottom: 1.5rem;
+        }
+
+        .voltar-link {
+          display: inline-block;
+          margin-bottom: 1rem;
+          color: #4a6fa5;
+          text-decoration: none;
+          font-size: 1rem;
+        }
+
+        .voltar-link:hover {
+          text-decoration: underline;
+        }
+
+        .header h1 {
+          margin: 0;
+          color: #2c3e50;
+          font-size: 1.3rem;
+        }
+
+        .erro {
+          text-align: center;
+          padding: 2rem 1rem;
+        }
+
+        .btn {
+          padding: 0.75rem 1.5rem;
+          background-color: #4a6fa5;
+          color: white;
+          border: none;
+          border-radius: 8px;
+          cursor: pointer;
+          font-size: 1rem;
+          margin-top: 1rem;
+        }
+
+        .detalhes-conteudo {
+          background: white;
+          border-radius: 12px;
+          overflow: hidden;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .imagem-principal {
+          position: relative;
+          width: 100%;
+          height: 300px;
+          background: #f8f9fa;
+        }
+
+        .imagem-obra {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+        }
+
+        .imagem-placeholder {
+          display: none;
+          width: 100%;
+          height: 100%;
+          align-items: center;
+          justify-content: center;
+          color: #999;
+          font-size: 1.2rem;
+          background: #f8f9fa;
+        }
+
+        .informacoes-obra {
+          padding: 1.5rem;
+        }
+
+        .info-principal {
+          margin-bottom: 1.5rem;
+          padding-bottom: 1rem;
+          border-bottom: 1px solid #f0f0f0;
+        }
+
+        .titulo-obra {
+          margin: 0 0 0.5rem 0;
+          color: #2c3e50;
+          font-size: 1.4rem;
+        }
+
+        .artista-obra {
+          margin: 0;
+          color: #4a6fa5;
+          font-size: 1.1rem;
+        }
+
+        .metadados {
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+          margin-bottom: 1.5rem;
+        }
+
+        .metadado-item {
+          display: flex;
+          justify-content: space-between;
+          padding: 0.8rem 0;
+          border-bottom: 1px solid #f8f9fa;
+        }
+
+        .metadado-label {
+          font-weight: 600;
+          color: #2c3e50;
+        }
+
+        .metadado-valor {
+          color: #666;
+          text-align: right;
+          max-width: 60%;
+        }
+
+        .descricao {
+          margin-bottom: 1.5rem;
+        }
+
+        .descricao h3 {
+          margin: 0 0 0.5rem 0;
+          color: #2c3e50;
+          font-size: 1.1rem;
+        }
+
+        .descricao p {
+          margin: 0;
+          color: #666;
+          line-height: 1.5;
+        }
+
+        .debug-info {
+          margin-top: 2rem;
+          padding: 1rem;
+          background: #f8f9fa;
+          border-radius: 8px;
+          font-size: 0.8rem;
+        }
+
+        .debug-info summary {
+          cursor: pointer;
+          font-weight: 600;
+          color: #4a6fa5;
+        }
+
+        .debug-info pre {
+          margin: 1rem 0 0 0;
+          white-space: pre-wrap;
+          font-size: 0.7rem;
+          color: #666;
+        }
+
+        @media (max-width: 480px) {
+          .container {
+            padding: 0.5rem;
+          }
+          
+          .imagem-principal {
+            height: 250px;
+          }
+          
+          .informacoes-obra {
+            padding: 1rem;
+          }
+        }
+      `}</style>
     </div>
   );
 }
