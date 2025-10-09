@@ -9,6 +9,8 @@
   --foreground: black;
 }
 
+
+/* temas claro e escuro do navegador */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: black;

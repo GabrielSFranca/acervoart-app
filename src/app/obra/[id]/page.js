@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import styles from "../../styles/page.module.css";
+import styles from "./page.module.css";
 
 function extractImgUrl(htmlStr){
   if(!htmlStr) return null;
