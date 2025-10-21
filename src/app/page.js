@@ -68,7 +68,10 @@ export default function Home() {
 }
 
 
-/*function extractImgUrl(htmlStr){
+
+
+/*
+function extractImgUrl(htmlStr){
   if(!htmlStr)
     return (null);
   // Isso é uma Expressão Regular (Regex) que busca pelo padrão src="..."
