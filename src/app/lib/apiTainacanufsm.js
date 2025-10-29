@@ -1,80 +1,7 @@
 // /lib/apiTainacanufsm.js
 // src/app/lib/apiTainacanufsm.js
 
-const BASE_URL = "https://tainacan.ufsm.br/acervo-artistico/wp-json";
-
-/**
- * Busca a lista de obras e enriquece cada uma com a URL direta da sua imagem,
- * seguindo a abordagem robusta de usar o endpoint de mídia.
- */
-export async function obterObras(perpage = 50) {
-  const urlTainacan = `${BASE_URL}/tainacan/v2/collection/2174/items?perpage=${perpage}`;
-
-  const resposta = await fetch(urlTainacan, { next: { revalidate: 3600 } });
-  if (!resposta.ok) {
-    throw new Error(`Erro ao buscar a lista de obras: ${resposta.status}`);
-  }
-  const dados = await resposta.json();
-  const itens = dados.items || [];
-
-  const promessasDeImagens = itens.map(obra => {
-    if (!obra.document || obra.document_type !== 'attachment') {
-      return Promise.resolve(null);
-    }
-    const mediaUrl = `${BASE_URL}/wp/v2/media/${obra.document}`;
-    // Usamos .then() para tratar erros individuais sem quebrar a busca toda
-    return fetch(mediaUrl).then(res => res.ok ? res.json() : null).catch(() => null);
-  });
-
-  const detalhesDasImagens = await Promise.all(promessasDeImagens);
-
-  const obrasCompletas = itens.map((obra, index) => {
-    return {
-      id: obra.id,
-      title: obra.title,
-      imagemUrl: detalhesDasImagens[index]?.source_url || null,
-    };
-  });
-
-  // Retornamos apenas as obras que, no final, conseguimos encontrar uma imagem.
-  return obrasCompletas.filter(obra => obra.imagemUrl);
-}
-
-/**
- * Busca os detalhes de uma única obra pelo seu ID, implementando a mesma
- * lógica robusta para encontrar a imagem.
- */
-export async function obterObraPorId(id) {
-    const url = `${BASE_URL}/tainacan/v2/items/${id}`;
-    const resp = await fetch(url, { next: { revalidate: 3600 } });
-    if (!resp.ok) throw new Error("Erro ao buscar detalhes da obra");
-    
-    const dados = await resp.json();
-
-    let imagemUrl = null;
-    // Verifica se a obra tem um documento que é uma imagem anexa
-    if (dados.document && dados.document_type === 'attachment') {
-        const mediaUrl = `${BASE_URL}/wp/v2/media/${dados.document}`;
-        const respMedia = await fetch(mediaUrl);
-        if (respMedia.ok) {
-            const dadosMedia = await respMedia.json();
-            imagemUrl = dadosMedia.source_url;
-        }
-    }
-
-    return {
-        id: dados.id,
-        title: dados.title,
-        description: dados.description,
-        imagemUrl: imagemUrl,
-        // Pegando os metadados de forma segura, como sugerido pela orientadora
-        artista: dados.metadata?.['5']?.value || 'Não informado',
-        ano: dados.metadata?.['14']?.value || 'Não informado',
-    };
-}
-
-
-/* const BASE_URL = "https://tainacan.ufsm.br/acervo-artistico/wp-json/tainacan/v2";
+const BASE_URL = "https://tainacan.ufsm.br/acervo-artistico/wp-json/tainacan/v2";
 
 export function extractImgUrl(htmlStr) {
   if (!htmlStr) return null;
@@ -116,7 +43,7 @@ export async function obterObras(perpage = 5) {
     urlimg: extractImgUrl(obra.document_as_html)
   }));
 }
-*/
+
 
 
 
