@@ -3,26 +3,29 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Collections } from '@mui/icons-material';
-//import { Event } from '@mui/icons-material';
+//import { Collections } from '@mui/icons-material';
+import PaletteIcon from '@mui/icons-material/Palette';  //import { Event } from '@mui/icons-material';
 //import styles from '@/app/styles/page.module.css';
 
-export function BottomNavMui(){
-    
-    const pathname = usePathname();
-    // determinar item ativo, ajuste conforme as rotas
-    const active = pathname === '/profile' ? 'profile' : 'home';
+export function BottomNavMui() {     
+    const pathname = usePathname(); // determinar item ativo, ajuste conforme as rotas
+    const isHome = pathname === '/'; // Considera '/' como rota ativa para home/obras
+
+    const actvCor = '#1976d2';
+    const inativCor = '#bbb';
 
     return (
         <nav className="bt-nav">
             <Link
-                href="/home"
-                className={`nav-item ${active === 'home' ? 'nav-item--active' : ''}`}
-                aria-current={active === 'home' ? 'page' : undefined}
+                href="/"
+                className={`nav-item${isHome ? ' nav-item--active' : ''}`}
+                aria-current={isHome ? 'page' : undefined}
                 aria-label="Ir para home"
             >
-                <Collections className="icon" fontSize='medium' aria-hidden='true' />
-                <span className='lbl-icon'>home</span>
+                <PaletteIcon
+                    className='icon'
+                    style={{ color: isHome ? actvCor : inativCor }}
+                />
             </Link>
         </nav>
     );
@@ -36,3 +39,37 @@ export function BottomNavMui(){
 </Link>
 
 */
+
+
+
+// "use client";
+
+// import React from 'react';
+// import Link from 'next/link';
+// import { usePathname } from 'next/navigation';
+// import { Collections } from '@mui/icons-material';
+// import PaletteIcon from '@mui/icons-material/Palette';
+
+// //import { Event } from '@mui/icons-material';
+// //import styles from '@/app/styles/page.module.css';
+
+// export function BottomNavMui(){
+    
+//     const pathname = usePathname();
+//     // determinar item ativo, ajuste conforme as rotas
+//     const active = pathname === '/profile' ? 'profile' : 'home';
+
+//     return (
+//         <nav className="bt-nav">
+//             <Link
+//                 href="/home"
+//                 className={`nav-item ${active === 'home' ? 'nav-item--active' : ''}`}
+//                 aria-current={active === 'home' ? 'page' : undefined}
+//                 aria-label="Ir para home"
+//             >
+//                 <Collections className="icon" fontSize='medium' aria-hidden='true' />
+//                 <span className='lbl-icon'>home</span>
+//             </Link>
+//         </nav>
+//     );
+// }

@@ -1,5 +1,190 @@
-// src/app/page.js // Exemplo de integração com a API do Tainacan
-"use client"
+"use client";
+import React, { useEffect, useState } from "react";
+import { buscarObras } from "./lib/tainacan-api";
+import Link from "next/link";
+import styles from "./styles/page.module.css";
+
+function Header() {
+  return (
+    <header className={styles.topbar}>
+      <h1 className={styles.headding}>🎨 Destaques da Semana</h1>
+      {/* <p>mosai | Acervo Artístico UFSM</p> */}
+    </header>
+  );
+}
+
+function CardObra({ obra }) {
+  return (
+    <div className={styles.containerobra}>
+      {obra.imgSrc ? (
+        <img 
+          src={obra.imgSrc} 
+          alt={obra.titulo} 
+          className={styles.image} 
+       />
+      ) : (
+        <div className={styles.obraimgph}>🖼️</div>
+      )}
+      <Link 
+        href={`/obra/${obra.id}`}
+        className={styles.link}
+      >
+        {obra.titulo}
+      </Link>
+    </div>
+  );
+}
+
+export default function Home() {
+  const [obras, setObras] = useState([]);
+  const [carregando, setCarregando] = useState(true);
+  const perPage = 100;
+
+  useEffect(() => {
+    buscarObras(perPage)
+      .then(setObras)
+      .catch(console.error)
+      .finally(() => setCarregando(false));
+  }, []);
+
+  if (carregando) {
+    return (
+      <div className={styles.page}>
+        <Header />
+        <main className={styles.appcontainer}>
+          <p>Carregando...</p>
+        </main>
+      </div>
+    );
+  }
+
+  return (
+    <div className={styles.page}>
+      <Header />
+      <main className={styles.appcontainer}>
+        <div className={styles.obraslist}>
+          {obras.map((obra) => (
+            <CardObra key={obra.id} obra={obra} />
+          ))}
+        </div>
+      </main>
+    </div>
+  );
+}
+
+// "use client"
+// import React, { useEffect, useState } from "react";
+// import { buscarObras } from "./lib/tainacan-api";
+// // src/app/page.js // Exemplo de integração com a API do Tainacan
+// /** app/novarota/page.js
+//  * nosso rascunho
+//  * paginacao
+//  * transformar esta lógica para a página Inicial
+//  * criar o componente da pagina de detalhes
+//  */
+
+// export default function Home() {
+//   const UFSM_ACERV = "tainacan.ufsm.br/acervo-artistico";
+//   const perPage = 100;
+//   const idCollection = 2174;
+//   const [obras, setObras] = useState([]);
+//   const [carregando, setCarregando] = useState(true);
+
+//   useEffect(() => {
+//     async function obterObras() {
+//       const BASE_URL = `https://${UFSM_ACERV}/wp-json/tainacan/v2/collection/${idCollection}/items?perpage=${perPage}&fetch_only=id,title,document,thumbnail,url`;
+//       try {
+//         const resposta = await fetch(BASE_URL);
+//         if (!resposta.ok) throw new Error("HTTP" + resposta.status);
+//         const dados = await resposta.json();
+
+//         //console.log('dados da api', JSON.stringify(dados));
+
+//         if (!dados.items) throw new Error("sem itens");
+
+//         console.log(dados.items.length + 'obras retornadas')
+
+//         const obrasFormatadas = dados.items.map((obraItem) => {
+//           const thumb = obraItem.thumbnail;
+//           const imgSrc = thumb?.medium?.[0] || null;
+//           return {
+//             id: obraItem.id,
+//             titulo: obraItem.title || "Sem título",
+//             imgSrc: imgSrc,
+//             fullDataObra: obraItem,
+//           };
+//         });
+
+//         console.log('obras formatadas', JSON.stringify(obrasFormatadas))
+
+//         setObras(obrasFormatadas);
+//       } catch (erro) {
+//         console.error("erro ao buscar obras", erro);
+//         setObras([]);
+//       } finally {
+//         setCarregando(false);
+//       }
+//     }
+//     obterObras();
+//   }, []);
+
+//   if (carregando) {
+//     return <main><p>Carregando obras...</p></main>;
+//   }
+
+//   return (
+//     <div>
+//       <Header />
+//         {obras.map((obra) => (
+//           <div key={obra.id} style={{
+//             width: 180,
+//             background: "#fff",
+//             borderRadius: 8,
+//             boxShadow: "0 1px 4px #0001",
+//             padding: 8,
+//             display: "flex",
+//             flexDirection: "column",
+//             alignItems: "center"
+//           }}>
+//             {obra.imgSrc ? (
+//               <img
+//                 src={obra.imgSrc}
+//                 alt={obra.titulo}
+//                 style={{
+//                   width: "100%",
+//                   height: "auto",
+//                   borderRadius: 6,
+//                   marginBottom: 8,
+//                   background: "#eee"
+//                 }}
+//               />
+//             ) : (
+//               <div style={{
+//                 width: "100%",
+//                 height: 120,
+//                 background: "#eee",
+//                 borderRadius: 6,
+//                 marginBottom: 8,
+//                 display: "flex",
+//                 alignItems: "center",
+//                 justifyContent: "center",
+//                 color: "#bbb",
+//                 fontSize: 32
+//               }}>
+//                 🖼️
+//               </div>
+//             )}
+//             <div style={{ textAlign: "center" }}>
+//               <strong>{obra.titulo}</strong>
+//             </div>
+//           </div>
+//         ))}
+//       </div>
+//     </div>
+//   );
+// }
+
+/*"use client"
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import styles from "./styles/page.module.css";
@@ -68,9 +253,11 @@ export default function Home() {
 }
 
 
+diferença de 
 
+Type
+Interface
 
-/*
 function extractImgUrl(htmlStr){
   if(!htmlStr)
     return (null);

@@ -1,6 +1,19 @@
-// app/novarota/page.js
 "use client"
 import React, { useEffect, useState } from "react";
+
+/** app/novarota/page.js
+ * nosso rascunho
+ * 
+ * 
+ * paginacao
+ * 
+ * transformar esta lógica para a página Inicial
+ * 
+ * 
+ * criar o componente da pagina de detalhes
+ * 
+ * 
+ */
 
 export default function NovaRota() {
   const UFSM_ACERV = "tainacan.ufsm.br/acervo-artistico";
@@ -21,7 +34,7 @@ export default function NovaRota() {
 
         if (!dados.items) throw new Error("sem itens");
 
-        console.log(dados.items.length + 'obras retornadas')
+        console.log(dados.items.length + 'obras retornadas');
 
         const obrasFormatadas = dados.items.map((obraItem) => {
           const thumb = obraItem.thumbnail;
@@ -34,7 +47,7 @@ export default function NovaRota() {
           };
         });
 
-        console.log('obras formatadas', JSON.stringify(obrasFormatadas))
+        console.log('obras formatadas', JSON.stringify(obrasFormatadas));
 
         setObras(obrasFormatadas);
       } catch (erro) {

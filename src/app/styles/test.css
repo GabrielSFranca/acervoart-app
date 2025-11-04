@@ -16,6 +16,97 @@ TIPOS DE CAIXAS
 
 
     margin: auto; /* centraliza uma caixa */
+
+
+
+body {
+  color: black;
+  background: var(--background);
+  /* propriedades de FONTE CSS */
+  font-family: Arial, Helvetica, sans-serif; /* familia */
+  font-size: 1em; /* tamanho; o mesmo que 16px*/
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.page {
+  max-width: 380px;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #2C2D26;
+
+  border-style: solid;
+  border-width: 1px;
+  border-color: white;
+}
+
+.topbar{
+  background-color: #ff5e33;
+  border: 1px solid white; 
+}
+
+.headding{
+  background-color: cornflowerblue;
+  color: blanchedalmond;
+  text-align: center;
+}
+
+.appcontainer{
+  background-color: #ff5b04;
+  border: 1px solid white; 
+}
+
+.obraslist {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.obra {
+  overflow: hidden;
+}
+
+
+.containerobra {
+  background-color: white;
+  border: 1px solid #e0e0e0 ;
+
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /*   ????? */
+}
+
+.info p {
+  color: royalblue;
+}
+
+/* BOX MODEL 
+
+* tanto html como css
+* aninhamento de 'caixas'
+
+height= altura
+width= largura
+border= borda
+padding= preenchimento/espaçamento entre borda e conteúdo
+margin= espaço EXTERNO entre uma caixa e outra
+outline= contorno, fora do elemento
+
+TIPOS DE CAIXAS
+* box-level= uma nova caixa do tipo box-level ocupa toda a largura da caixa externa
+* inline-level= permanece dentro da linha
+
+
+    margin: auto; /* centraliza uma caixa 
 .page {
   max-width: 480px;
   margin: 0 auto;
@@ -45,3 +136,52 @@ TIPOS DE CAIXAS
 }
 
 
+*/
+
+
+
+
+
+
+/* 
+body {
+  max-width: 380px;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #2C2D26;
+  border: 1px solid white;
+
+}
+
+
+.page {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #2C2D26;
+
+  border-style: solid;
+  border-width: 1px;
+  border-color: white;
+}
+
+.topbar{
+  background-color: #ff5e33;
+  border: 1px solid white; 
+}
+.headding{
+  background-color: cornflowerblue;
+  color: blanchedalmond;
+  text-align: center;
+}
+
+.appcontainer{
+  background-color: #ff5b04;
+  border: 1px solid white; 
+}
+
+ */

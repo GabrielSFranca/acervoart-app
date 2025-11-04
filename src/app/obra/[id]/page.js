@@ -1,14 +1,36 @@
-"use client"
-import React, { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import Link from "next/link";
-import styles from "./page.module.css";
+// components/TopBarObra.js
+// "use client";
+import React, { useState, useEffect } from "react";
+import { useRouter, useParams } from "next/navigation";
 
-function extractImgUrl(htmlStr){
-  if(!htmlStr) return null;
-  const regex = /src="([^"]+)"/;
-  const match = htmlStr.match(regex);
-  return match ? match[1] : null;
+import Close from "@mui/icons-material";
+import FavoriteBorder from "@mui/icons-material";
+import { Share } from "@mui/icons-material";
+
+import { UFSM_ACERV, normalizeObra } from "@/app/lib/tainacan-api";
+import styles from './page.module.css.css';
+
+function Header() {
+  const router = useRouter();
+  //const [liked, setLiked] = useState(false);
+
+  function handleBack() {
+    router.push("/");
+  }
+
+  return (
+    <header className={styles.topbar}>
+      <button onClick={handleBack} aria-label="voltar" className={styles.actionbtn}>
+        <Close style={{ fontSize: 28 }} />
+      </button>
+      <button onClick={handleBack} aria-label="voltar" className={styles.actionbtn}>
+        <FavoriteBorder style={{ fontSize: 28 }} />
+      </button>
+      <button onClick={handleBack} aria-label="voltar" className={styles.actionbtn}>
+        <Share style={{ fontSize: 26 }} />
+      </button>
+    </header>
+  );
 }
 
 export default function ObraDetalhe() {
@@ -17,47 +39,90 @@ export default function ObraDetalhe() {
   const [carregando, setCarregando] = useState(true);
 
   useEffect(() => {
-    async function buscarObra() {
+    async function buscaObraPorId() {
       try {
-        const url = `https://tainacan.ufsm.br/acervo-artistico/wp-json/tainacan/v2/items/${id}`;
-        const resp = await fetch(url);
-        if (!resp.ok) throw new Error("Erro ao buscar obra");
-        const dados = await resp.json();
-        setObra({
-          ...dados,
-          urlimg: extractImgUrl(dados.document_as_html)
-        });
+        const URL = `https://${UFSM_ACERV}/wp-json/tainacan/v2/items/${id}`;
+        const res = await fetch(URL);
+        if (!res.ok) throw new Error("Erro ao buscar obra");
+        const dados = await res.json();
+        setObra(normalizeObra(dados));
       } catch (e) {
         setObra(null);
       } finally {
         setCarregando(false);
       }
     }
-    buscarObra();
+    buscaObraPorId();
   }, [id]);
 
-  if (carregando) return <p>Carregando...</p>;
-  if (!obra) return <p>Obra não encontrada.</p>;
+  if (carregando) {
+    return (
+      <div className={styles.page}>
+        <Header />
+        <main className={styles.appcontainer}>
+          <p>Carregando...</p>
+        </main>
+      </div>
+    );
+  }
+
+  if (!obra) {
+    return (
+      <div className={styles.page}>
+        <Header />
+        <main className={styles.appcontainer}>
+          <p>Obra não encontrada</p>
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.page}>
-      <header className={styles.topbar}>
-        <h1 className={styles.headding}>{obra.title}</h1>
-        <Link href="/" className={styles.secondary}>← Voltar</Link>
-      </header>
-      <main className={styles.appcontainer}>
-        <div className={styles.containerobra}>
-          {obra.urlimg ? (
-            <img src={obra.urlimg} alt={obra.title} className={styles.image} />
-          ) : (
-            <div className={styles.obraimgph}>🖼️</div>
-          )}
-        </div>
-        <div className={styles.info}>
-          <p><strong>Descrição:</strong> {obra.description}</p>
-          {/* Adicione outros campos conforme necessário */}
-        </div>
-      </main>
+      <Header />
+        <main className={styles.appcontainer}>
+            <div className={styles.containerobra}>
+                {obra.imgSrc ? (
+                  <img 
+                    src={obra.imgSrc} 
+                    alt={obra.titulo}
+                    className={styles.image}
+                  />
+                ) : (
+                  <div className={styles.obraimgph}>🖼️</div>
+                )}
+                <div className={styles.info}>
+                    <h1>{obra.titulo}</h1>
+                    <h2>{obra.artista}</h2>
+                    <p>descricao</p>
+                </div>
+            </div>
+        </main>
     </div>
+
   );
 }
+
+
+// async function buscaObraPorId(id) {
+//   const BASE_URL = `https://${UFSM_ACERV}/wp-json/tainacan/v2/items/${id}`;
+//   try {
+//     const resposta = await fetch(BASE_URL);
+//     if (!resposta.ok) throw new Error("Erro HTTP " + resposta.status);
+//     const dados = await resposta.json();
+//     // A resposta para 1 item não vem em 'items', mas sim como objeto direto
+//     return dados;
+//   } catch (erro) {
+//     console.error("Erro ao buscar obra:", erro);
+//     throw erro;
+//   }
+// }
+
+// function Button() {
+//   return <x>xxxx</x>;
+// }
+
+
+// export default function DetailObra() {
+//   return <div>xxx</div>;
+// }
