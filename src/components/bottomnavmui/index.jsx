@@ -1,17 +1,15 @@
 "use client";
-
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 //import { Collections } from '@mui/icons-material';
 import PaletteIcon from '@mui/icons-material/Palette';  //import { Event } from '@mui/icons-material';
-//import styles from '@/app/styles/page.module.css';
 
 export function BottomNavMui() {     
     const pathname = usePathname(); // determinar item ativo, ajuste conforme as rotas
     const isHome = pathname === '/'; // Considera '/' como rota ativa para home/obras
 
-    const actvCor = '#1976d2';
+    const actvCor = '#ff5b04';
     const inativCor = '#bbb';
 
     return (
@@ -39,9 +37,6 @@ export function BottomNavMui() {
 </Link>
 
 */
-
-
-
 // "use client";
 
 // import React from 'react';

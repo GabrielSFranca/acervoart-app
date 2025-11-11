@@ -1,7 +1,5 @@
 export const UFSM_ACERV = "tainacan.ufsm.br/acervo-artistico";
-//const perPage = 10;
-const idCollection = 2174;
-
+const idCollection = 2174; //const perPage = 10;
 
 function getAuthor(obraItem){
 
@@ -16,8 +14,6 @@ function getAuthor(obraItem){
   
   return 'nao achou';
 }
-
-
 
 export function normalizeObra(obraItem) {
   const thumb = obraItem.thumbnail;
@@ -53,25 +49,26 @@ export async function buscarObras(perPage) {
 
 
 
-export async function buscaObraPorId(obraItem){
-    const id=obraItem.id;
+export async function buscaObraPorId(id){
+    // const id=obraItem.id;
     const BASE_URL = `https://${UFSM_ACERV}/wp-json/tainacan/v2/items/${id}`;
-  try {
-    const resposta = await fetch(BASE_URL);
-    if (!resposta.ok) throw new Error("Erro HTTP " + resposta.status);
+    try {
+      const resposta = await fetch(BASE_URL);
+      if (!resposta.ok) throw new Error("Erro HTTP " + resposta.status);
     
-    const dados = await resposta.json();
-    if (!dados.items) throw new Error("Nenhuma obra encontrada");
+      const dados = await resposta.json();
+      //if (!dados.items) throw new Error("Nenhuma obra encontrada");
 
-    console.log(dados.items.length + 'obras retornadas');
+      //console.log(dados.items.length + 'obras retornadas');
     
-    return dados.items.map(normalizeObra);
+      // dados.items.map(normalizeObra);
+      return normalizeObra(dados);
 
     //console.log('obras formatadas', JSON.stringify(obrasFormatadas));
 
-  } catch (erro) {
-    console.error("Erro ao buscar obras:", erro);
-    throw erro;
+    } catch (erro) {
+      console.error("Erro ao buscar obras:", erro);
+      throw erro;
   }
 }
 

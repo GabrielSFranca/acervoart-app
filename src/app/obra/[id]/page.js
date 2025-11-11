@@ -1,14 +1,13 @@
-// components/TopBarObra.js
-// "use client";
+"use client";
 import React, { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 
-import Close from "@mui/icons-material";
-import FavoriteBorder from "@mui/icons-material";
-import { Share } from "@mui/icons-material";
+import CloseIcon from "@mui/icons-material/Close";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import ShareIcon from "@mui/icons-material/Share";
 
-import { UFSM_ACERV, normalizeObra } from "@/app/lib/tainacan-api";
-import styles from './page.module.css.css';
+import { buscaObraPorId } from "@/app/lib/tainacan-api";
+import styles from './page.module.css';
 
 function Header() {
   const router = useRouter();
@@ -21,13 +20,13 @@ function Header() {
   return (
     <header className={styles.topbar}>
       <button onClick={handleBack} aria-label="voltar" className={styles.actionbtn}>
-        <Close style={{ fontSize: 28 }} />
+        <CloseIcon style={{ fontSize: 28 }} />
       </button>
       <button onClick={handleBack} aria-label="voltar" className={styles.actionbtn}>
-        <FavoriteBorder style={{ fontSize: 28 }} />
+        <FavoriteBorderIcon style={{ fontSize: 28 }} />
       </button>
       <button onClick={handleBack} aria-label="voltar" className={styles.actionbtn}>
-        <Share style={{ fontSize: 26 }} />
+        <ShareIcon style={{ fontSize: 26 }} />
       </button>
     </header>
   );
@@ -39,20 +38,21 @@ export default function ObraDetalhe() {
   const [carregando, setCarregando] = useState(true);
 
   useEffect(() => {
-    async function buscaObraPorId() {
+    async function fetchObra() {
       try {
-        const URL = `https://${UFSM_ACERV}/wp-json/tainacan/v2/items/${id}`;
-        const res = await fetch(URL);
-        if (!res.ok) throw new Error("Erro ao buscar obra");
-        const dados = await res.json();
-        setObra(normalizeObra(dados));
+        // const URL = `https://${UFSM_ACERV}/wp-json/tainacan/v2/items/${id}`;
+        // const res = await fetch(URL);
+        // if (!res.ok) throw new Error("Erro ao buscar obra");
+        // const dados = await res.json();
+        const normalizedObra = await buscaObraPorId(id);
+        setObra(normalizedObra);
       } catch (e) {
         setObra(null);
       } finally {
         setCarregando(false);
       }
     }
-    buscaObraPorId();
+    fetchObra();
   }, [id]);
 
   if (carregando) {
