@@ -20,7 +20,7 @@ export default function RootLayout({ children }) {
     <html lang="pt-BR">
       <body className={`${cormorant.variable}`}>
         {children}
-        <BottomNavMui />
+        {/* <BottomNavMui /> */}
       </body>
     </html>
   );

@@ -38,14 +38,15 @@ function CardObra({ obra }) {
 export default function Home() {
   const [obras, setObras] = useState([]);
   const [carregando, setCarregando] = useState(true);
-  const perPage = 100;
+  const [page, setPage] = useState(1);
+  const perPage = 20;
 
   useEffect(() => {
-    buscarObras(perPage)
+    buscarObras(perPage, page)
       .then(setObras)
       .catch(console.error)
       .finally(() => setCarregando(false));
-  }, []);
+  }, [page]);
 
   if (carregando) {
     return (
@@ -66,6 +67,21 @@ export default function Home() {
           {obras.map((obra) => (
             <CardObra key={obra.id} obra={obra} />
           ))}
+        </div>
+        <div style={{ display: "flex", justifyContent: "center", gap: 16, margin: "2rem 0" }}>
+          <button
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            disabled={page === 1}
+          >
+            anterior
+          </button>
+          <span>página {page}</span>
+          <button
+            onClick={() => setPage((p) => p + 1)}
+            disabled={obras.length < perPage}
+          >
+            próximo
+          </button>
         </div>
       </main>
     </div>

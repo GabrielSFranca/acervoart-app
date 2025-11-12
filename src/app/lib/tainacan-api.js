@@ -26,8 +26,8 @@ export function normalizeObra(obraItem) {
   };
 }
 
-export async function buscarObras(perPage) {
-  const BASE_URL = `https://${UFSM_ACERV}/wp-json/tainacan/v2/collection/${idCollection}/items?perpage=${perPage}&fetch_only=id,title,document,thumbnail,url`;
+export async function buscarObras(perPage=20, page=1) {
+  const BASE_URL = `https://${UFSM_ACERV}/wp-json/tainacan/v2/collection/${idCollection}/items?perpage=${perPage}&paged=${page}&fetch_only=id,title,thumbnail,metadata`;
   try {
     const resposta = await fetch(BASE_URL);
     if (!resposta.ok) throw new Error("Erro HTTP " + resposta.status);
@@ -46,8 +46,6 @@ export async function buscarObras(perPage) {
     throw erro;
   }
 }
-
-
 
 export async function buscaObraPorId(id){
     // const id=obraItem.id;
