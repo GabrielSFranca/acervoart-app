@@ -11,7 +11,6 @@ export function BottomNavMui() {
 
     const actvCor = '#ff5b04';
     const inativCor = '#bbb';
-
     return (
         <nav className="bt-nav">
             <Link

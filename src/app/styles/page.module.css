@@ -1,10 +1,13 @@
+@import './variables.css';
+
 .page {
   max-width: 380px;
   margin: 0 auto;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: black;
+  background-color: var(--bg-gray); 
+  /* background-color: black; */
 
   border-style: solid;
   border-width: 1px;
@@ -12,11 +15,12 @@
 }
 
 .topbar{
-  background-color: #ff5e33;
-  border: 1px solid white; 
+
+  /* background-color: #ff5e33; */
+  /* border: 1px solid white;  */
 }
 
-.headding{
+.heading{
   background-color: cornflowerblue;
   color: blanchedalmond;
   text-align: center;
@@ -70,6 +74,7 @@
 
 
 .link {
-  color: royalblue;
+  /* color: royalblue; */
+  color: var(--ice-white-color);
 }
 

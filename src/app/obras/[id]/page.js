@@ -15,12 +15,12 @@ function Header() {
 
   function handleBack() {
     router.push("/");
-  }
+  } 
 
   return (
     <header className={styles.topbar}>
       <button onClick={handleBack} aria-label="voltar" className={styles.actionbtn}>
-        <CloseIcon style={{ fontSize: 28 }} />
+        <CloseIcon style={{ color: 'white', fontSize: 28 }} />
       </button>
       <button onClick={handleBack} aria-label="voltar" className={styles.actionbtn}>
         <FavoriteBorderIcon style={{ fontSize: 28 }} />
@@ -93,8 +93,13 @@ export default function ObraDetalhe() {
                 )}
                 <div className={styles.info}>
                     <h1>{obra.titulo}</h1>
-                    <h2>{obra.artista}</h2>
-                    <p>descricao</p>
+                    <h3>{obra.artista}</h3>
+                    {/* <p>obra.</p> */}
+                    <p><strong>Dimensoes: </strong>{obra.dimensoes}</p>
+                    <p><strong>descript: </strong>{obra.desc}</p>
+                    <p><strong>Ano: </strong>{obra.ano}</p>
+                    <p><strong>Suporte: </strong>{obra.suport}</p>
+                    <p><strong>Material: </strong>{obra.material}</p>
                 </div>
             </div>
         </main>

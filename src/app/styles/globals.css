@@ -1,14 +1,5 @@
 @charset "UTF-8"; /* conjunto de caracteres */
-
 @import './variables.css';
-
-/* temas claro e escuro do navegador
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: black;
-    --foreground: #ededed;
-  }
-} */
 /* reset */
 * {
   margin: 0;
@@ -28,6 +19,7 @@ body {
   /* propriedades de FONTE CSS */
   font-family: Arial, Helvetica, sans-serif; /* familia */
   font-size: 1em; /* tamanho; o mesmo que 16px*/
+  color: var(--ice-white-color);
 
   /* margin: 0 auto;
   min-height: 100vh;
@@ -48,9 +40,9 @@ p {
   /* propriedades de FONTE CSS */
   font-weight: normal; /* peso(espessura); mesmo que =400*/
   font-style: normal;  /* estilo */
-  color: azure; /* cor */
+  /* color: azure; cor */
   text-align: left; /* alinhamento */
-  text-indent: 15px; /* identação */
+  /* text-indent: 15px; identação */
 }
 /*
 ORDEM DA PROPRIEDADE SHORTHAND:
@@ -86,7 +78,8 @@ img {
   justify-content: space-around;
   gap: 8px;
   border-top: 1px solid rgba(0,0,0,.06);
-  background: rgba(255,255,255,0.98);
+  /* background: rgba(255,255,255,0.98); */
+  background: var(--bg-gray);
   backdrop-filter: blur(6px);
   z-index: 1000;
 }
@@ -128,3 +121,12 @@ img {
 @media(min-width: 800px){
   .bt-nav { width: 480px; left: 50%; transform: translateX(-50%); border-radius: 12px 12px 0 0; }
 }
+
+
+/* temas claro e escuro do navegador
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: black;
+    --foreground: #ededed;
+  }
+} */

@@ -2,17 +2,23 @@ export const UFSM_ACERV = "tainacan.ufsm.br/acervo-artistico";
 const idCollection = 2174; //const perPage = 10;
 
 function getAuthor(obraItem){
-
   const tax=obraItem?.metadata?.taxonomia;
     // 1️⃣ forma mais simples — campo padrão no acervo da UFSM
   const autor1=tax?.value_as_string;
-  if (autor1 && autor1.trim()) return autor1.trim();
+  if (autor1 && autor1.trim()) 
+    return autor1.trim();
 
   // 2️⃣ alternativa — array de objetos dentro de metadata.taxonomia.value
   const autor2 = tax?.value?.[0]?.name;
-  if (autor2 && autor2.trim()) return autor2.trim();
-  
+  if (autor2 && autor2.trim()) 
+    return autor2.trim();
   return 'nao achou';
+}
+
+function getMeta(obra, key){
+  return obra?.fullDataObra?.metadata?.[key]?.value_as_string 
+         || obra?.fullDataObra?.metadata?.[key]?.value 
+         || "";
 }
 
 export function normalizeObra(obraItem) {
@@ -26,7 +32,32 @@ export function normalizeObra(obraItem) {
   };
 }
 
-export async function buscarObras(perPage=20, page=1) {
+export function normalizaObraDetalhe(obraItem){
+  const thumb=obraItem.thumbnail
+  return {
+    id: obraItem.id,
+    titulo: obraItem.title,
+    imgSrc: thumb?.full?.[0] || null,
+    artista: getAuthor(obraItem),
+    ano: getMeta(obraItem, 'data-da-obra-2'),
+    dimensoes: getMeta(obraItem, 'dimensoes-com-emolduramento'),
+    tecnica: getMeta(obraItem, "tecnica-3"),
+    material: getMeta(obraItem, "material"),
+    suport: getMeta(obraItem, "suporte"),
+    serie: getMeta(obraItem, "serie-2"),
+    tema: getMeta(obraItem, "tematica"),
+    mold: getMeta(obraItem, "moldura"),
+    loc: getMeta(obraItem, "localizacao"),
+    georef: getMeta(obraItem, "georeferenciamento"),
+    crdft: getMeta(obraItem, "creditos-da-fotografia"),
+    criadorRegistro: getMeta(obraItem, "autora-do-registro-2"),
+    desc: obraItem.description || 'sem desc',
+    url: obraItem.url,
+    fullDataObra: obraItem,
+  }
+}
+
+export async function buscarObras(perPage, page=1) {
   const BASE_URL = `https://${UFSM_ACERV}/wp-json/tainacan/v2/collection/${idCollection}/items?perpage=${perPage}&paged=${page}&fetch_only=id,title,thumbnail,metadata`;
   try {
     const resposta = await fetch(BASE_URL);
@@ -48,25 +79,18 @@ export async function buscarObras(perPage=20, page=1) {
 }
 
 export async function buscaObraPorId(id){
-    // const id=obraItem.id;
-    const BASE_URL = `https://${UFSM_ACERV}/wp-json/tainacan/v2/items/${id}`;
-    try {
-      const resposta = await fetch(BASE_URL);
-      if (!resposta.ok) throw new Error("Erro HTTP " + resposta.status);
+  const BASE_URL = `https://${UFSM_ACERV}/wp-json/tainacan/v2/items/${id}?fetch_only=id,title,thumbnail,metadata,description,url,document_as_html`;
+  try {
+    const resposta = await fetch(BASE_URL);
+    if (!resposta.ok) throw new Error("Erro HTTP " + resposta.status);
     
-      const dados = await resposta.json();
-      //if (!dados.items) throw new Error("Nenhuma obra encontrada");
+    const dados = await resposta.json();
 
-      //console.log(dados.items.length + 'obras retornadas');
-    
-      // dados.items.map(normalizeObra);
-      return normalizeObra(dados);
+    return normalizaObraDetalhe(dados);
 
-    //console.log('obras formatadas', JSON.stringify(obrasFormatadas));
-
-    } catch (erro) {
-      console.error("Erro ao buscar obras:", erro);
-      throw erro;
+  } catch (erro) {
+    console.error("Erro ao buscar obras:", erro);
+    throw erro;
   }
 }
 

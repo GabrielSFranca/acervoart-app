@@ -4,5 +4,8 @@
     onde podemos declarar vars globais
   */
   --bg-gray: #2C2D26;
-  /* --largura-max: 320px; */
+  --largura-max: 380px;
+  --main-orange-color: #ff5b04;
+  --second-color: #ff5e33;
+  --ice-white-color: #F2F2F2;
 }
