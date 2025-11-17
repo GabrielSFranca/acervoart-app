@@ -1,8 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { buscarObras } from './lib/tainacan-api';
+import { buscarObras } from '../lib/tainacan-api';
 import Link from "next/link";
-import styles from './styles/page.module.css';
+import styles from './page.module.css';
 
 function Header({ activeTab, setActiveTab }) {
   return (
@@ -34,19 +34,20 @@ function Header({ activeTab, setActiveTab }) {
 
 function CardObra({ obra }) {
   return (
-    // O Link agora envolve todo o card
-    <Link href={`/obras/${obra.id}`} className={styles.card}>
+    <Link 
+      href={`/obras/${obra.id}`} 
+      className={styles.card}
+    >
       {obra.imgSrc ? (
         <img 
           src={obra.imgSrc} 
           alt={obra.titulo} 
           className={styles.image} 
-       />
-      ) : (
-        // Placeholder caso não haja imagem
-        <div className={styles.imgph}>🖼️</div>
-      )}
-      <div className={styles.inf}>
+      />
+      ) : null}
+      {/* placeholder caso nao haja imagem */}
+      <div className={styles.imgph}>🖼️</div>
+      <div className={styles.info}>
         <h3>{obra.titulo}</h3>
       </div>
     </Link>
@@ -116,3 +117,5 @@ export default function Page() {
     </div>
   );
 }
+
+

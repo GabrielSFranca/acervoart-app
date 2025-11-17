@@ -1,7 +1,7 @@
 export const UFSM_ACERV = "tainacan.ufsm.br/acervo-artistico";
 const idCollection = 2174; //const perPage = 10;
 
-function getAuthor(obraItem){
+function getArtist(obraItem){
   const tax=obraItem?.metadata?.taxonomia;
     // 1️⃣ forma mais simples — campo padrão no acervo da UFSM
   const autor1=tax?.value_as_string;
@@ -27,18 +27,18 @@ export function normalizeObra(obraItem) {
     id: obraItem.id,
     titulo: obraItem.title || "noTitlemsg",
     imgSrc: thumb?.medium?.[0] || null,
-    artista: getAuthor(obraItem),
+    // artista: getAuthor(obraItem),
     fullDataObra: obraItem,
   };
 }
 
 export function normalizaObraDetalhe(obraItem){
-  const thumb=obraItem.thumbnail
+  const thumb = obraItem.thumbnail;
   return {
     id: obraItem.id,
-    titulo: obraItem.title,
+    titulo: obraItem.title || "noTitlemsg",
     imgSrc: thumb?.full?.[0] || null,
-    artista: getAuthor(obraItem),
+    artista: getArtist(obraItem),
     ano: getMeta(obraItem, 'data-da-obra-2'),
     dimensoes: getMeta(obraItem, 'dimensoes-com-emolduramento'),
     tecnica: getMeta(obraItem, "tecnica-3"),
@@ -93,10 +93,6 @@ export async function buscaObraPorId(id){
     throw erro;
   }
 }
-
-
-
-
 
 
 

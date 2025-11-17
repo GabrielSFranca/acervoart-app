@@ -94,12 +94,11 @@ export default function ObraDetalhe() {
                 <div className={styles.info}>
                     <h1>{obra.titulo}</h1>
                     <h3>{obra.artista}</h3>
-                    {/* <p>obra.</p> */}
-                    <p><strong>Dimensoes: </strong>{obra.dimensoes}</p>
-                    <p><strong>descript: </strong>{obra.desc}</p>
+                    {/* <p><strong>Dimensoes: </strong>{obra.dimensoes}</p> */}
+                    {/* <p><strong>descript: </strong>{obra.desc}</p> */}
                     <p><strong>Ano: </strong>{obra.ano}</p>
-                    <p><strong>Suporte: </strong>{obra.suport}</p>
-                    <p><strong>Material: </strong>{obra.material}</p>
+                    {/* <p><strong>Suporte: </strong>{obra.suport}</p> */}
+                    {/* <p><strong>Material: </strong>{obra.material}</p> */}
                 </div>
             </div>
         </main>

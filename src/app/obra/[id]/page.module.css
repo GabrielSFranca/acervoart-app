@@ -1,0 +1,43 @@
+@import "../../styles/variables.css";
+
+.topbar {
+    position: sticky;
+    top: 0;
+
+    max-width: var(--largura-max);
+    width: 100%;
+    height: 60px;
+    margin: 0 auto;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 0 16px;
+    z-index: 1000;
+    border: 1px solid white;
+}
+
+.actionbtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    /* border-radius: 50%; btn circular */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* transition: background-color 0.2s ease; */
+}
+/* .actionbtn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+} */
+.icon {
+    font-size: 28;
+    color: white;
+}
+
+.iconliked {
+    font-size: 28px;
+    color: #e53935;
+}
