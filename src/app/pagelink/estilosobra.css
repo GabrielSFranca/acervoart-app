@@ -1,0 +1,132 @@
+@import '../../styles/variables.css';
+
+/* --- Estrutura da Página --- */
+.page {
+  max-width: var(--largura-max);
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-gray);
+  /* Remove a borda de debug se ainda existir */
+  /* border: 1px solid white; */
+}
+
+/* --- Header Fixo --- */
+.topbar {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  max-width: var(--largura-max);
+  margin: 0 auto;
+  height: 60px;
+  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  
+  /* Efeito de vidro fosco para ver a imagem por trás ao rolar */
+  background-color: rgba(44, 45, 38, 0.85); /* --bg-gray com 85% de opacidade */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 1000;
+}
+
+.actionbtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px; /* Aumenta a área de toque */
+  border-radius: 50%; /* Botão circular */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.actionbtn:hover {
+  background-color: rgba(255, 255, 255, 0.1); /* Feedback */
+}
+
+.icon {
+  font-size: 28px;
+  color: var(--ice-white-color);
+}
+
+.iconliked {
+  font-size: 28px;
+  color: #e53935; /* Vermelho para 'curtido' */
+}
+
+/* --- Conteúdo Principal --- */
+.appcontainer {
+  padding: 1.5rem 1rem; /* 24px top/bottom, 16px left/right */
+}
+
+.containerobra {
+  width: 100%;
+}
+
+/* --- Imagem da Obra --- */
+.image {
+  width: 100%;
+  height: auto; /* Mantém a proporção */
+  display: block;
+  border-radius: 12px; /* Consistente com os cards da home */
+  background: #555; /* Fundo para carregamento */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  margin-bottom: 1.5rem; /* Espaço antes do texto */
+}
+
+/* Placeholder para obras sem imagem */
+.obraimgph {
+  width: 100%;
+  aspect-ratio: 4 / 3; /* Proporção padrão */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  color: #888;
+  background: #3a3b32; /* Um pouco mais claro que o fundo */
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+}
+
+/* --- Bloco de Informações --- */
+.info {
+  padding: 0 0.5rem; /* Leve recuo para o texto */
+}
+
+.info h1 {
+  font-family: var(--font-titulo-cormorant), serif;
+  font-size: 2.25rem; /* 36px */
+  color: var(--ice-white-color);
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+
+.info h3 {
+  font-family: var(--font-text-futura), sans-serif;
+  font-size: 1.25rem; /* 20px */
+  color: var(--main-orange-color);
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.info p {
+  font-family: var(--font-text-futura), sans-serif;
+  font-size: 1rem; /* 16px */
+  color: #ccc; /* Cinza claro para descrição */
+  line-height: 1.6;
+  margin-bottom: 0.75rem;
+}
+
+.info p strong {
+  font-weight: 600;
+  color: var(--ice-white-color);
+  margin-right: 0.5rem;
+}

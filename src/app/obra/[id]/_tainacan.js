@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import styles from './ObraHeader.module.css'; // Usando seu próprio CSS Module
+// import styles from './ObraHeader.module.css'; // Usando seu próprio CSS Module
 
 // icons do Material UI
 import CloseIcon from '@mui/icons-material/Close';

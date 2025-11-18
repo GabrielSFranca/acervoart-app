@@ -1,38 +1,75 @@
-"use client";
-import React, { useState, useEffect } from "react";
-import { useRouter, useParams } from "next/navigation";
+'use client';
 
-import CloseIcon from "@mui/icons-material/Close";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import ShareIcon from "@mui/icons-material/Share";
+import React, {useState, useEffect} from 'react';
+import {useParams, useRouter} from 'next/navigation';
 
-import { buscaObraPorId } from "@/app/lib/tainacan-api";
+// icons do Material UI
+import CloseIcon from '@mui/icons-material/Close';
+import FavoriteIcon from '@mui/icons-material/Favorite'; // cora preenchido
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'; // cora borda
+import ShareIcon from '@mui/icons-material/Share';
+
+// funct de lib/tainacan-api
+import { buscaObraPorId } from '@/app/lib/tainacan-api';
 import styles from './page.module.css';
 
-function Header() {
-  const router = useRouter();
-  //const [liked, setLiked] = useState(false);
+function HeaderObra(){
+    const rota=useRouter();
+    const[liked, setLiked]=useState(false); // estado do btn 'curtir'
+    function voltar(){ rota.push('/') }
+    function curtir(){ setLiked(!liked) }
 
-  function handleBack() {
-    router.push("/");
-  } 
+    async function compartilhar(){
+        // tenta usar a API de compartilhamento nativa do navegador - funciona em mobile
+        if(navigator.share){ // DOM window -> navigator / alert
+            try {
+                await navigator.share({
+                    title: document.title, // titulo da pag
+                    text: 'confira esta obra incrivel do acervo artistico da ufsm',
+                    url: window.location.href, // url corrente
+                })
+            } catch (err){
+                console.error('erro ao compartilhar', err)
+            }
+        } else {
+            alert('compartilhamento nao suportado. use o botao de compartilhar do seu navegador')
+        }
+    }
 
-  return (
-    <header className={styles.topbar}>
-      <button onClick={handleBack} aria-label="voltar" className={styles.actionbtn}>
-        <CloseIcon style={{ color: 'white', fontSize: 28 }} />
-      </button>
-      <button onClick={handleBack} aria-label="voltar" className={styles.actionbtn}>
-        <FavoriteBorderIcon style={{ fontSize: 28 }} />
-      </button>
-      <button onClick={handleBack} aria-label="voltar" className={styles.actionbtn}>
-        <ShareIcon style={{ fontSize: 26 }} />
-      </button>
-    </header>
-  );
+    return (
+        <header className={styles.topbar}>
+            <button
+                onClick={voltar} 
+                aria-label="Voltar para a galeria"
+                className={styles.actionbtn}
+            >
+                <CloseIcon className={styles.icon}/>
+            </button>
+            
+            <button
+                onClick={curtir}
+                aria-label="Curtir obra"
+                className={styles.actionbtn}
+            >
+                {liked ? (
+                    <FavoriteIcon className={styles.iconliked} />
+                ) : (
+                    <FavoriteBorderIcon className={styles.icon} />
+                )}
+            </button>
+
+            <button
+                onClick={compartilhar} 
+                aria-label="partilhar"
+                className={styles.actionbtn}
+            >
+                <ShareIcon className={styles.icon}/>
+            </button>
+        </header>
+    )
 }
 
-export default function ObraDetalhe() {
+export default function ObraDetailPage() {
   const { id } = useParams();
   const [obra, setObra] = useState(null);
   const [carregando, setCarregando] = useState(true);
@@ -40,10 +77,6 @@ export default function ObraDetalhe() {
   useEffect(() => {
     async function fetchObra() {
       try {
-        // const URL = `https://${UFSM_ACERV}/wp-json/tainacan/v2/items/${id}`;
-        // const res = await fetch(URL);
-        // if (!res.ok) throw new Error("Erro ao buscar obra");
-        // const dados = await res.json();
         const normalizedObra = await buscaObraPorId(id);
         setObra(normalizedObra);
       } catch (e) {
@@ -58,7 +91,7 @@ export default function ObraDetalhe() {
   if (carregando) {
     return (
       <div className={styles.page}>
-        <Header />
+        <HeaderObra />
         <main className={styles.appcontainer}>
           <p>Carregando...</p>
         </main>
@@ -69,7 +102,7 @@ export default function ObraDetalhe() {
   if (!obra) {
     return (
       <div className={styles.page}>
-        <Header />
+        <HeaderObra />
         <main className={styles.appcontainer}>
           <p>Obra não encontrada</p>
         </main>
@@ -79,7 +112,7 @@ export default function ObraDetalhe() {
 
   return (
     <div className={styles.page}>
-      <Header />
+      <HeaderObra />
         <main className={styles.appcontainer}>
             <div className={styles.containerobra}>
                 {obra.imgSrc ? (
@@ -103,30 +136,5 @@ export default function ObraDetalhe() {
             </div>
         </main>
     </div>
-
   );
 }
-
-
-// async function buscaObraPorId(id) {
-//   const BASE_URL = `https://${UFSM_ACERV}/wp-json/tainacan/v2/items/${id}`;
-//   try {
-//     const resposta = await fetch(BASE_URL);
-//     if (!resposta.ok) throw new Error("Erro HTTP " + resposta.status);
-//     const dados = await resposta.json();
-//     // A resposta para 1 item não vem em 'items', mas sim como objeto direto
-//     return dados;
-//   } catch (erro) {
-//     console.error("Erro ao buscar obra:", erro);
-//     throw erro;
-//   }
-// }
-
-// function Button() {
-//   return <x>xxxx</x>;
-// }
-
-
-// export default function DetailObra() {
-//   return <div>xxx</div>;
-// }
