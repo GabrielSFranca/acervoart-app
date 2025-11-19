@@ -15,7 +15,7 @@ body {
 }
 
 body {
-  background: var(--bg-gray);
+  background: black;
   /* propriedades de FONTE CSS */
   font-family: var(--font-text-futura), Arial, Helvetica, sans-serif;
   /* font-family: Arial, Helvetica, sans-serif; familia */

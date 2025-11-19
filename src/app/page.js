@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { buscarObras } from './lib/tainacan-api';
+import { getObras } from './lib/tainacan-api';
 import Link from "next/link";
 import styles from './styles/page.module.css';
 
@@ -35,7 +35,10 @@ function Header({ activeTab, setActiveTab }) {
 function CardObra({ obra }) {
   return (
     // O Link agora envolve todo o card
-    <Link href={`/obras/${obra.id}`} className={styles.card}>
+    <Link 
+      href={`/obras/${obra.id}`} 
+      className={styles.card}
+    >
       {obra.imgSrc ? (
         <img 
           src={obra.imgSrc} 
@@ -58,16 +61,18 @@ export default function Page() {
   const [carregando, setCarregando] = useState(true);
   const [page, setPage] = useState(1);
 
-  const [activeTab, setActiveTab]=useState('all')
-
+  const [activeTab, setActiveTab]=useState('all');
   const perPage = 20;
 
   useEffect(() => {
-    buscarObras(perPage, page)
+    getObras(perPage, page)
       .then(setObras)
       .catch(console.error)
       .finally(() => setCarregando(false));
   }, [page]);
+
+  console.log(obras);
+
   // estado de carregamento (loading.....)
   if (carregando) {
     return (
@@ -109,7 +114,7 @@ export default function Page() {
             onClick={() => setPage((p) => p + 1)}
             disabled={obras.length < perPage}
           >
-            Próximo
+            Próxima
           </button>
         </div>
       </main>

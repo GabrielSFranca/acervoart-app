@@ -9,6 +9,10 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+
+
+  /* padding-bottom: 80px; espacamento inf para a barra nao cobrir a nav de pags */
+
   /* position: relative;
   max-width: 380px;
   margin: 0 auto;
@@ -19,6 +23,8 @@
   border-style: solid;
   border-width: 1px;
   border-color: white; */
+
+
 }
 
 .topbar {
@@ -128,49 +134,52 @@
 
 .info {
   background: #F2F2F2;
-
   padding: 1.5rem;
-
+  padding-bottom: 80px;
   border-radius: 20px 20px 0 0;
-
-/* Puxa um pouco para cima da imagem (efeito visual moderno), opcional */
+  /* Puxa um pouco para cima da imagem (efeito visual moderno), opcional */
   margin-top: -20px; 
   position: relative; 
   z-index: 10;
-  
   /* Garante que o container cresça até o fim da tela */
   flex: 1; 
   min-height: 300px;
+
 }
 
 /* Tipografia escura para fundo claro */
 .info h1 {
   font-family: var(--font-titulo-cormorant), serif;
-  color: #1a1a1a; /* Quase preto */
+
+  color: var(--second-color);
   font-size: 2rem;
   margin-bottom: 0.5rem;
   line-height: 1.2;
 }
 
 .info h3 {
-  font-family: var(--font-text-futura), sans-serif;
-  color: var(--main-orange-color); /* Mantém a identidade da marca */
-  font-size: 1.1rem;
-  font-weight: 600;
+  /* font-family: var(--font-text-futura), Arial, Helvetica, sans-serif; */
+  color: #1a1a1a; /* Mantém a identidade da marca */
+  /* font-size: 1.1rem; */
+  /* font-weight: 600; */
   margin-bottom: 1.5rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  font: bold normal 1.1rem var(--font-text-futura), Arial, Helvetica, sans-serif;
+
+  /* text-transform: uppercase; */
+  /* letter-spacing: 1px; */
 }
 
 .info p {
-  font-family: var(--font-text-futura), sans-serif;
-  color: #4a4a4a; /* Cinza escuro */
+  /* font-family: var(--font-text-futura), sans-serif; */
+  /* color: #4a4a4a; Cinza escuro */
   font-size: 1rem;
   line-height: 1.6;
   margin-bottom: 0.75rem;
+
+  color: #4A4A4A;
 }
 
-.info p strong {
+/* .info p strong {
   color: #000;
   font-weight: 600;
-}
+} */

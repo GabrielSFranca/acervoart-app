@@ -1,10 +1,8 @@
-import { Cormorant_Garamond } from "next/font/google"; 
-// importando o pacote de fontes do Google no Next.js
-
+import { Cormorant_Garamond } from "next/font/google";  // importando o pacote de fontes do Google no Next.js
 // configura as fontes
 // import localfont
-import { localFont } from 'next/font/local';
-// 2. Configure a fonte local (Futura)
+import { localFont } from "next/font/local";
+
 export const futura = localFont({
   src: [
     {
@@ -17,10 +15,10 @@ export const futura = localFont({
       weight: '700',
       style: 'normal',
     },
-    // Adicione mais arquivos aqui (ex: Italic)
+
   ],
   display: 'swap',
-  variable: '--font-text-futura', // 3. Defina a variável CSS
+  variable: '--font-text-futura',
 });
 
 export const cormorant = Cormorant_Garamond({

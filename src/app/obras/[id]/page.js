@@ -11,6 +11,7 @@ import ShareIcon from '@mui/icons-material/Share';
 
 // funct de lib/tainacan-api
 import { buscaObraPorId } from '@/app/lib/tainacan-api';
+// import { buscaObraPorId } from '@/app/lib/api-tai2';
 import styles from './page.module.css';
 
 function HeaderObra(){
@@ -79,6 +80,8 @@ export default function ObraDetailPage() {
       try {
         const normalizedObra = await buscaObraPorId(id);
         setObra(normalizedObra);
+        // debug msg
+        console.log(normalizedObra);
       } catch (e) {
         setObra(null);
       } finally {
@@ -127,11 +130,11 @@ export default function ObraDetailPage() {
                 <div className={styles.info}>
                     <h1>{obra.titulo}</h1>
                     <h3>{obra.artista}</h3>
-                    {/* <p><strong>Dimensoes: </strong>{obra.dimensoes}</p> */}
-                    {/* <p><strong>descript: </strong>{obra.desc}</p> */}
-                    <p><strong>Ano: </strong>{obra.ano}</p>
-                    {/* <p><strong>Suporte: </strong>{obra.suport}</p> */}
-                    {/* <p><strong>Material: </strong>{obra.material}</p> */}
+                    <p><strong>Dimensoes: </strong>{obra.dimensoes}</p>
+                    {/* <p><strong>Descrição: </strong>{obra.desc}</p> */}
+                    <p><strong>Ano: </strong>{obra.datAno}</p>
+                    <p><strong>Suporte: </strong>{obra.sup}</p>
+                    <p><strong>Material: </strong>{obra.material}</p>
                 </div>
             </div>
         </main>
