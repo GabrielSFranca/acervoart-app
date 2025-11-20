@@ -1,6 +1,7 @@
 // src/app/lib/tainacan-api.js
 export const UFSM_ACERV = "tainacan.ufsm.br/acervo-artistico";
 const collection = 2174;
+// const segundos=60, horasDia=24;
 
 function normalizObr(itemObr) {
   const thumb = itemObr.thumbnail;
@@ -19,7 +20,12 @@ export async function getObras(perPage, page = 1) {
   const BASE_URL = `https://${UFSM_ACERV}/wp-json/tainacan/v2/collection/${collection}/items?perpage=${perPage}&paged=${page}&fetch_only=id,title,thumbnail,metadata`;
   
   try {
-    const resposta = await fetch(BASE_URL);
+    // fetch (url, options);
+    const resposta = await fetch(BASE_URL, {
+      cache: "force-cache",
+      next: { revalidate: 60 * 60 *24 },
+    });
+
     if (!resposta.ok) throw new Error("Erro HTTP " + resposta.status);
 
     const dados = await resposta.json();
@@ -40,16 +46,18 @@ export async function buscaObraPorId(id) {
   const THUMB_URL = `https://${UFSM_ACERV}/wp-json/tainacan/v2/items/${id}?fetch_only=id,thumbnail`;
   let imagemThumb = null;
   try {
-    const resposta = await fetch(THUMB_URL);
+    const resposta = await fetch(THUMB_URL, {
+      cache: "force-cache",
+      next: { revalidate: 60 * 60 *24 },
+    });
 
     if (!resposta.ok) throw new Error("erro http" + resposta.status);
 
     const itemObra = await resposta.json();
-    // imagemThumb = itemObra.thumbnail?.medium?.[0] || null;
+
     imagemThumb = itemObra.thumbnail?.full?.[0] || 
                   itemObra.thumbnail?.medium?.[0] || 
                   null;
-    // obraItem.thumbnail.medium?.[0] || obraItem.thumbnail.full?.[0]
   } catch (err) {
     console.error("erro ao buscar obra", err);
     //throw err
@@ -57,7 +65,10 @@ export async function buscaObraPorId(id) {
 
   const META_BASE_URL = `https://${UFSM_ACERV}/wp-json/tainacan/v2/items/${id}`;
   try {
-    const res = await fetch(META_BASE_URL);
+    const res = await fetch(META_BASE_URL, {
+      cache: "force-cache",
+      next: { revalidate: 60 * 60 *24 },
+    });
 
     if (!res.ok) throw new Error("erro http" + res.status);
     const item = await res.json();
