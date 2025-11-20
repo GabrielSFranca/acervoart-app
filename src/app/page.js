@@ -46,6 +46,7 @@ function CardObra({ obra }) {
           src={obra.imgSrc} 
           alt={obra.titulo} 
           className={styles.image} 
+          loading="lazy"
        />
       ) : (
         // Placeholder caso não haja imagem
