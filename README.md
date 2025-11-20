@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Acervo Artístico App
 
-## Getting Started
+Este projeto é um aplicativo web desenvolvido para a visualização e exploração do Acervo Artístico da [Instituição] (conectado via API Tainacan).
 
-First, run the development server:
+## Funcionalidades Principais
+
+* **Catálogo Interativo**: Navegue por uma vasta coleção de obras de arte com paginação.
+* **Visualização Detalhada**: Acesse informações completas sobre cada obra, incluindo artista, data, técnica, material e dimensões.
+* **Filtros e Categorias**: Utilize filtros intuitivos (como *"Tudo"*, *"Destaques"*, *"Pinturas"*) para encontrar obras específicas.
+* **Responsividade**: Experiência otimizada para dispositivos móveis e desktop.
+
+> Este é um projeto Next.js inicializado com `create-next-app`.
+
+## Primeiros Passos
+
+Primeiro, execute o servidor de desenvolvimento:
 
 ```bash
 npm run dev
-# or
+# ou
 yarn dev
-# or
+# ou
 pnpm dev
-# or
+# ou
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abra [http://localhost:3000](http://localhost:3000) no seu navegador para ver o resultado.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+Você pode começar a editar a página modificando `app/page.js`. A página é atualizada automaticamente conforme você edita o arquivo.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Este projeto usa `next/font` para otimizar e carregar automaticamente a fonte Geist, uma nova família de fontes para a Vercel.
 
-## Learn More
+## Saiba Mais
 
-To learn more about Next.js, take a look at the following resources:
+Para saber mais sobre o Next.js, consulte os seguintes recursos:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+* [Documentação do Next.js](https://nextjs.org/docs) — aprenda sobre os recursos e API do Next.js.
+* [Aprenda Next.js](https://nextjs.org/learn) — um tutorial interativo do Next.js.
+* [Repositório Next.js no GitHub](https://github.com/vercel/next.js) — seu feedback e contribuições são bem-vindos!
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deploy no Vercel
 
-## Deploy on Vercel
+A maneira mais fácil de fazer o deploy do seu aplicativo Next.js é usando a Plataforma Vercel, dos criadores do Next.js.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Consulte nossa [documentação de deploy do Next.js](https://nextjs.org/docs/deployment) para mais detalhes.
