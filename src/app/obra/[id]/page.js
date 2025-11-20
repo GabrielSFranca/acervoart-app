@@ -1,38 +1,95 @@
-"use client";
-import React, { useState, useEffect } from "react";
-import { useRouter, useParams } from "next/navigation";
+'use client';
 
-import CloseIcon from "@mui/icons-material/Close";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import ShareIcon from "@mui/icons-material/Share";
+import React, {useState, useEffect} from 'react';
+import {useParams, useRouter} from 'next/navigation';
 
-import { buscaObraPorId } from "@/app/lib/tainacan-api";
+// icons do Material UI
+import CloseIcon from '@mui/icons-material/Close';
+import FavoriteIcon from '@mui/icons-material/Favorite'; // cora preenchido
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'; // cora borda
+import ShareIcon from '@mui/icons-material/Share';
+
+
+// Ícones para os detalhes
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import BrushIcon from '@mui/icons-material/Brush';
+import StraightenIcon from '@mui/icons-material/Straighten'; // Régua para dimensões
+import LayersIcon from '@mui/icons-material/Layers'; // Para suporte/material
+import CategoryIcon from '@mui/icons-material/Category'; // Para técnica
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+// funct de lib/tainacan-api
+import { buscaObraPorId } from '@/app/lib/tainacan-api';
+// import { buscaObraPorId } from '@/app/lib/api-tai2';
 import styles from './page.module.css';
 
-function Header() {
-  const router = useRouter();
-  //const [liked, setLiked] = useState(false);
+function HeaderObra(){
+    const rota=useRouter();
+    const[liked, setLiked]=useState(false); // estado do btn 'curtir'
+    function voltar(){ rota.push('/') }
+    function curtir(){ setLiked(!liked) }
 
-  function handleBack() {
-    router.push("/");
-  } 
+    async function compartilhar(){
+        // tenta usar a API de compartilhamento nativa do navegador - funciona em mobile
+        if(navigator.share){ // DOM window -> navigator / alert
+            try {
+                await navigator.share({
+                    title: document.title, // titulo da pag
+                    text: 'confira esta obra incrivel do acervo artistico da ufsm',
+                    url: window.location.href, // url corrente
+                })
+            } catch (err){
+                console.error('erro ao compartilhar', err)
+            }
+        } else {
+            alert('compartilhamento nao suportado. use o botao de compartilhar do seu navegador')
+        }
+    }
 
-  return (
-    <header className={styles.topbar}>
-      <button onClick={handleBack} aria-label="voltar" className={styles.actionbtn}>
-        <CloseIcon style={{ color: 'white', fontSize: 28 }} />
-      </button>
-      <button onClick={handleBack} aria-label="voltar" className={styles.actionbtn}>
-        <FavoriteBorderIcon style={{ fontSize: 28 }} />
-      </button>
-      <button onClick={handleBack} aria-label="voltar" className={styles.actionbtn}>
-        <ShareIcon style={{ fontSize: 26 }} />
-      </button>
-    </header>
-  );
+    return (
+        <header className={styles.topbar}>
+            <button
+                onClick={voltar} 
+                aria-label="Voltar para a galeria"
+                className={styles.actionbtn}
+            >
+                <CloseIcon className={styles.icon}/>
+            </button>
+            
+            <button
+                onClick={curtir}
+                aria-label="Curtir obra"
+                className={styles.actionbtn}
+            >
+                {liked ? (
+                    <FavoriteIcon className={styles.iconliked} />
+                ) : (
+                    <FavoriteBorderIcon className={styles.icon} />
+                )}
+            </button>
+
+            <button
+                onClick={compartilhar} 
+                aria-label="partilhar"
+                className={styles.actionbtn}
+            >
+                <ShareIcon className={styles.icon}/>
+            </button>
+        </header>
+    )
 }
 
-export default function ObraDetalhe() {
+
+function Detalhe({ icon, val, lbl }){
+    if(!val || val === null){ return null }
+    return (
+        <dl className={styles.detailItem}>
+            <dt className={styles.detailHead}><span className={styles.detailIcon}>{icon}</span><span className={styles.label}>{lbl}</span></dt>
+            <dd className={styles.val}><p>{val}</p></dd>
+        </dl>   
+    )
+}
+
+export default function ObraDetailPage() {
   const { id } = useParams();
   const [obra, setObra] = useState(null);
   const [carregando, setCarregando] = useState(true);
@@ -40,12 +97,10 @@ export default function ObraDetalhe() {
   useEffect(() => {
     async function fetchObra() {
       try {
-        // const URL = `https://${UFSM_ACERV}/wp-json/tainacan/v2/items/${id}`;
-        // const res = await fetch(URL);
-        // if (!res.ok) throw new Error("Erro ao buscar obra");
-        // const dados = await res.json();
         const normalizedObra = await buscaObraPorId(id);
         setObra(normalizedObra);
+        // debug msg
+        console.log(normalizedObra);
       } catch (e) {
         setObra(null);
       } finally {
@@ -58,9 +113,9 @@ export default function ObraDetalhe() {
   if (carregando) {
     return (
       <div className={styles.page}>
-        <Header />
+        <HeaderObra />
         <main className={styles.appcontainer}>
-          <p>Carregando...</p>
+          <div className={styles.load}><p>Carregando obra...</p></div>
         </main>
       </div>
     );
@@ -69,9 +124,9 @@ export default function ObraDetalhe() {
   if (!obra) {
     return (
       <div className={styles.page}>
-        <Header />
+        <HeaderObra />
         <main className={styles.appcontainer}>
-          <p>Obra não encontrada</p>
+          <p>Obra não encontrada.</p>
         </main>
       </div>
     );
@@ -79,7 +134,7 @@ export default function ObraDetalhe() {
 
   return (
     <div className={styles.page}>
-      <Header />
+      <HeaderObra />
         <main className={styles.appcontainer}>
             <div className={styles.containerobra}>
                 {obra.imgSrc ? (
@@ -91,42 +146,70 @@ export default function ObraDetalhe() {
                 ) : (
                   <div className={styles.obraimgph}>🖼️</div>
                 )}
-                <div className={styles.info}>
-                    <h1>{obra.titulo}</h1>
-                    <h3>{obra.artista}</h3>
-                    {/* <p><strong>Dimensoes: </strong>{obra.dimensoes}</p> */}
-                    {/* <p><strong>descript: </strong>{obra.desc}</p> */}
-                    <p><strong>Ano: </strong>{obra.ano}</p>
-                    {/* <p><strong>Suporte: </strong>{obra.suport}</p> */}
-                    {/* <p><strong>Material: </strong>{obra.material}</p> */}
-                </div>
+                <section className={styles.info}>
+                    <div className={styles.titArtist}>
+                        <h1>{obra.titulo}</h1>
+                        <h3><span className={styles.autor}>{obra.artista}</span></h3>
+                        <span className={styles.ano}>, {obra.datAno}</span>
+                    </div>
+                    
+                    <hr className={styles.divider} />
+
+                    <div className={styles.detailGrid}>
+                        <Detalhe 
+                            icon={<CategoryIcon fontSize='small'/>} 
+                            lbl='Técnica' 
+                            val={obra.tec}
+                        />
+                        <Detalhe 
+                            icon={<LayersIcon fontSize='small'/>} 
+                            lbl='Suporte' 
+                            val={obra.sup}
+                        />
+                        <Detalhe 
+                            icon={<StraightenIcon fontSize='small'/>} 
+                            lbl='Dimensões' 
+                            val={obra.dimensoes}
+                        />
+                        <Detalhe 
+                            icon={<LocationOnIcon fontSize='small'/>} 
+                            lbl='Localização' 
+                            val={obra.loc}
+                        />
+
+                    </div>
+
+                    {/* <p><strong>Dimensoes: </strong>{obra.dimensoes}</p>
+                    <p><strong>Descrição: </strong>{obra.desc}</p>
+                    <p><strong>Ano: </strong>{obra.datAno}</p>
+                    <p><strong>Suporte: </strong>{obra.sup}</p>
+                    <p><strong>Material: </strong>{obra.material}</p> */}
+                </section>
             </div>
         </main>
     </div>
-
   );
 }
 
 
-// // async function buscaObraPorId(id) {
-// //   const BASE_URL = `https://${UFSM_ACERV}/wp-json/tainacan/v2/items/${id}`;
-// //   try {
-// //     const resposta = await fetch(BASE_URL);
-// //     if (!resposta.ok) throw new Error("Erro HTTP " + resposta.status);
-// //     const dados = await resposta.json();
-// //     // A resposta para 1 item não vem em 'items', mas sim como objeto direto
-// //     return dados;
-// //   } catch (erro) {
-// //     console.error("Erro ao buscar obra:", erro);
-// //     throw erro;
-// //   }
-// // }
-
-// // function Button() {
-// //   return <x>xxxx</x>;
-// // }
 
 
-// // export default function DetailObra() {
-// //   return <div>xxx</div>;
-// // }
+
+
+
+
+/**
+ * 
+ * 
+ *     <section>
+        <div>
+            <h1>title</h1>
+            <h2>author, <span>ano</span></h2>
+        </div>
+
+        <dl>
+            <dt><p>detalhe</p></dt>
+            <dd><p>value</p></dd>
+        </dl>
+    </section>
+ */

@@ -35,8 +35,10 @@ function Header({ activeTab, setActiveTab }) {
 function CardObra({ obra }) {
   return (
     // O Link agora envolve todo o card
+    // prefetch para forcar o carregamento da pagina
+
     <Link 
-      href={`/obras/${obra.id}`} 
+      href={`/obra/${obra.id}`} 
       className={styles.card}
     >
       {obra.imgSrc ? (
