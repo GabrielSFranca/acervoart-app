@@ -1,25 +1,36 @@
 import { Cormorant_Garamond } from "next/font/google";  // importando o pacote de fontes do Google no Next.js
 // configura as fontes
 // import localfont
-import { localFont } from "next/font/local";
+// import { localFont } from "next/font/local";
 
-export const futura = localFont({
-  src: [
-    {
-      path: '../fonts/futuraRegularFont.ttf',
-      weight: '400',
-      style: 'normal',
-    },
-    {
-      path: '../fonts/futuraBoldFont.ttf',
-      weight: '700',
-      style: 'normal',
-    },
+// export const futura = localFont({
+//   src: [
+//     {
+//       path: '../fonts/futuraRegularFont.ttf',
+//       weight: '400',
+//       style: 'normal',
+//     },
+//     {
+//       path: '../fonts/futuraBoldFont.ttf',
+//       weight: '700',
+//       style: 'normal',
+//     },
 
-  ],
-  display: 'swap',
+//   ],
+//   display: 'swap',
+//   variable: '--font-text-futura',
+// });
+
+
+import { Montserrat } from "next/font/google";
+
+export const montserrat = Montserrat({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"], // escolha os pesos que você usa
+  display: "swap",
   variable: '--font-text-futura',
 });
+
 
 export const cormorant = Cormorant_Garamond({
     subsets: ['latin'],

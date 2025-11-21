@@ -34,14 +34,14 @@ function HeaderObra(){
             try {
                 await navigator.share({
                     title: document.title, // titulo da pag
-                    text: 'confira esta obra incrivel do acervo artistico da ufsm',
+                    text: "Confira esta obra incrível do Acervo Artístico da UFSM!",
                     url: window.location.href, // url corrente
                 })
             } catch (err){
                 console.error('erro ao compartilhar', err)
             }
         } else {
-            alert('compartilhamento nao suportado. use o botao de compartilhar do seu navegador')
+            alert("Compartilhamento não suportado. Use o botão de compartilhar do seu navegador.")
         }
     }
 
@@ -80,7 +80,7 @@ function HeaderObra(){
 
 
 function Detalhe({ icon, val, lbl }){
-    if(!val || val === null){ return null }
+    if(val === null){ return null }
     return (
         <dl className={styles.detailItem}>
             <dt className={styles.detailHead}><span className={styles.detailIcon}>{icon}</span><span className={styles.label}>{lbl}</span></dt>
@@ -149,8 +149,7 @@ export default function ObraDetailPage() {
                 <section className={styles.info}>
                     <div className={styles.titArtist}>
                         <h1>{obra.titulo}</h1>
-                        <h3><span className={styles.autor}>{obra.artista}</span></h3>
-                        <span className={styles.ano}>, {obra.datAno}</span>
+                        <h2><span className={styles.autor}>{obra.artista}</span><span className={styles.ano}>, {obra.datAno}</span></h2>
                     </div>
                     
                     <hr className={styles.divider} />

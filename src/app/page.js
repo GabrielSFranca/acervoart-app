@@ -2,9 +2,11 @@
 import React, { useEffect, useState } from "react";
 import { getObras } from './lib/tainacan-api';
 import Link from "next/link";
+import { Loader } from "@/components/loader";
+
 import styles from './styles/page.module.css';
 
-function Header({ activeTab, setActiveTab }) {
+export function Header({ activeTab, setActiveTab }) {
   return (
     <header className={styles.topbar}>
       <h1 className={styles.heading}>Obras</h1>
@@ -38,8 +40,9 @@ function CardObra({ obra }) {
     // prefetch para forcar o carregamento da pagina
 
     <Link 
-      href={`/obra/${obra.id}`} 
-      className={styles.card}
+      href={`/obras/${obra.id}`} 
+      className={styles.card} 
+      prefetch={true}
     >
       {obra.imgSrc ? (
         <img 
@@ -61,7 +64,7 @@ function CardObra({ obra }) {
 
 export default function Page() {
   const [obras, setObras] = useState([]);
-  const [carregando, setCarregando] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
 
   const [activeTab, setActiveTab]=useState('all');
@@ -71,18 +74,22 @@ export default function Page() {
     getObras(perPage, page)
       .then(setObras)
       .catch(console.error)
-      .finally(() => setCarregando(false));
+      .finally(() => setLoading(false));
   }, [page]);
 
   console.log(obras);
 
-  // estado de carregamento (loading.....)
-  if (carregando) {
+  // estado de carregamento (loading...)
+  if (loading) {
     return (
       <div className={styles.page}>
         <Header activeTab={activeTab} setActiveTab={setActiveTab} />
         <main className={styles.appcontainer}>
-          <p>Carregando...</p>
+          
+          <div className={styles.load}>
+            <Loader />
+          </div>
+
         </main>
       </div>
     );

@@ -3,28 +3,12 @@
 .page {
   position: relative;
   max-width: var(--largura-max);
-
   margin: 0 auto;
-
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-
 
   /* padding-bottom: 80px; espacamento inf para a barra nao cobrir a nav de pags */
-
-  /* position: relative;
-  max-width: 380px;
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background-color: var(--bg-gray);
-  border-style: solid;
-  border-width: 1px;
-  border-color: white; */
-
-
 }
 
 .topbar {
@@ -47,14 +31,12 @@
   border-bottom: 1px solid rgba(255,255,255,0.1);
 
     /* margin: 0 auto; */
-
-    /* border: 1px solid white; */
 }
 
 .actionbtn {
     background: none;
     border: none;
-    cursor: pointer;
+    /* cursor: pointer; */
     padding: 8px;
     /* border-radius: 50%; btn circular */
     display: flex;
@@ -65,28 +47,30 @@
 /* .actionbtn:hover {
   background-color: rgba(255, 255, 255, 0.1);
 } */
-.icon {
-    font-size: 28;
-    color: white;
+
+.actionbtn:hover {
+  background: rgba(255, 255, 255, 0.3);
 }
 
+.icon, .iconliked {
+  color: white;
+}
+/* .icon {
+    font-size: 28;
+    color: white;
+} */
 .iconliked {
-    font-size: 28px;
+    /* font-size: 28px; */
     color: #e53935;
 }
 
 .appcontainer{
-  padding: 0;
+  padding: 0; /*??*/
   display: flex;
   flex-direction: column;
   flex: 1;
-  /* border: 1px solid white;  */
 }
-/* .obraslist {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-} */
+
 .containerobra {
   background-color: rgb(183, 206, 200);
   border: 1px solid #e0e0e0 ;
@@ -133,53 +117,97 @@
 }
 
 .info {
-  background: #F2F2F2;
-  padding: 1.5rem;
-  padding-bottom: 80px;
-  border-radius: 20px 20px 0 0;
-  /* Puxa um pouco para cima da imagem (efeito visual moderno), opcional */
-  margin-top: -20px; 
+  /* nao muda */
+  background-color: var(--ice-white-color);
   position: relative; 
   z-index: 10;
   /* Garante que o container cresça até o fim da tela */
-  flex: 1; 
+  flex: 1;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.2);
+  padding: 2rem 1.5rem 4rem 1.5rem; /* padding: 1.5rem; */ /* padding-bottom: 80px; */
+  border-radius: 20px 20px 0 0;
+  /* sobe um pouco por cima da imagem 20 ou 24 */
+  margin-top: -20px; 
+
+  /* muda */
   min-height: 300px;
-
 }
 
-/* Tipografia escura para fundo claro */
-.info h1 {
-  font-family: var(--font-titulo-cormorant), serif;
 
-  color: var(--second-color);
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
-  line-height: 1.2;
-}
-
-.info h3 {
-  /* font-family: var(--font-text-futura), Arial, Helvetica, sans-serif; */
-  color: #1a1a1a; /* Mantém a identidade da marca */
-  /* font-size: 1.1rem; */
-  /* font-weight: 600; */
+.titArtist{
   margin-bottom: 1.5rem;
-  font: bold normal 1.1rem var(--font-text-futura), Arial, Helvetica, sans-serif;
+}
 
-  /* text-transform: uppercase; */
+.titArtist h1{
+  font-size: 2.2rem;
+  line-height: 1.1;
+  color: var(--second-color);
+}
+
+.titArtist h2 {
+  font: bold normal 1rem var(--font-text-futura), Arial, Helvetica, sans-serif;
+  color: var(--bg-gray);
+  text-transform: uppercase;
+
   /* letter-spacing: 1px; */
 }
 
-.info p {
-  /* font-family: var(--font-text-futura), sans-serif; */
-  /* color: #4a4a4a; Cinza escuro */
-  font-size: 1rem;
-  line-height: 1.6;
-  margin-bottom: 0.75rem;
+.divider {
+  border: 0;
+  height: 1px;
+  background: #ddd;
+  margin: 1.5rem 0;
+}
 
+/* --- Grid de Detalhes --- */
+.detailGrid {
+  display: grid;
+  /* Duas colunas iguais. Em telas muito pequenas, vira 1 coluna */
+  grid-template-columns: 1fr 1fr; 
+  gap: 1.5rem 1rem; /* Gap vertical maior, horizontal menor */
+}
+
+.detItem{
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
   color: #4A4A4A;
 }
 
-/* .info p strong {
-  color: #000;
-  font-weight: 600;
-} */
+.detH{
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  /* color: #888; Cor suave para o rótulo */
+}
+
+.detIco{
+  display: flex;
+  align-items: center;
+  color: var(--second-color); /* Ícone sutil */
+}
+
+.detLbl{
+  font-size: 1rem;
+  /* text-transform: uppercase; */
+  font-weight: bold;
+  color: var(--second-color);
+  letter-spacing: 0.5px;
+  /* font-family: var(--font-text-futura), sans-serif; */
+}
+
+.val{
+  font-size: 0.9rem;
+  /* color: #4A4A4A; */
+  font-weight: 500;
+  line-height: 1.3;
+  word-break: break-word;
+}
+
+.load{
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #888;
+}

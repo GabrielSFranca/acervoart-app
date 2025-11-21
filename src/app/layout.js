@@ -1,5 +1,5 @@
 import "./styles/globals.css";
-import { cormorant, futura} from "./styles/fonts";
+import { cormorant, montserrat } from "./styles/fonts";
 import { BottomNavMui } from '@/components/bottomnavmui';
 
 export const metadata = {
@@ -10,7 +10,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="pt-BR">
-      <body className={`${cormorant.variable} ${futura.variable}`}>
+      <body className={`${cormorant.variable} ${montserrat.variable}`}>
         {children}
         <BottomNavMui />
       </body>
