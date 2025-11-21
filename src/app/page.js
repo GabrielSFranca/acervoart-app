@@ -42,14 +42,14 @@ function CardObra({ obra }) {
     <Link 
       href={`/obras/${obra.id}`} 
       className={styles.card} 
-      prefetch={true}
+      // prefetch={true}
     >
       {obra.imgSrc ? (
         <img 
           src={obra.imgSrc} 
           alt={obra.titulo} 
           className={styles.image} 
-          loading="lazy"
+          // loading="lazy"
        />
       ) : (
         // Placeholder caso não haja imagem

@@ -3,6 +3,12 @@ export const UFSM_ACERV = "tainacan.ufsm.br/acervo-artistico";
 const collection = 2174;
 // const segundos=60, horasDia=24;
 
+
+// , {
+//       cache: "force-cache",
+//       next: { revalidate: 60 * 60 *24 },
+//     }
+
 function normalizObr(itemObr) {
   const thumb = itemObr.thumbnail;
   return {
@@ -21,10 +27,7 @@ export async function getObras(perPage, page = 1) {
   
   try {
     // fetch (url, options);
-    const resposta = await fetch(BASE_URL, {
-      cache: "force-cache",
-      next: { revalidate: 60 * 60 *24 },
-    });
+    const resposta = await fetch(BASE_URL);
 
     if (!resposta.ok) throw new Error("Erro HTTP " + resposta.status);
 
@@ -46,10 +49,7 @@ export async function buscaObraPorId(id) {
   const THUMB_URL = `https://${UFSM_ACERV}/wp-json/tainacan/v2/items/${id}?fetch_only=id,thumbnail`;
   let imagemThumb = null;
   try {
-    const resposta = await fetch(THUMB_URL, {
-      cache: "force-cache",
-      next: { revalidate: 60 * 60 *24 },
-    });
+    const resposta = await fetch(THUMB_URL);
 
     if (!resposta.ok) throw new Error("erro http" + resposta.status);
 
@@ -65,10 +65,7 @@ export async function buscaObraPorId(id) {
 
   const META_BASE_URL = `https://${UFSM_ACERV}/wp-json/tainacan/v2/items/${id}`;
   try {
-    const res = await fetch(META_BASE_URL, {
-      cache: "force-cache",
-      next: { revalidate: 60 * 60 *24 },
-    });
+    const res = await fetch(META_BASE_URL);
 
     if (!res.ok) throw new Error("erro http" + res.status);
     const item = await res.json();
